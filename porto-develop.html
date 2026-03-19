@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mohamad Imam Salji — Software Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Syne', 'sans-serif'],
+            body: ['DM Sans', 'sans-serif'],
+          },
+          colors: {
+            ink: '#0a0a0f',
+            surface: '#111118',
+            card: '#16161f',
+            border: '#1e1e2e',
+            muted: '#3a3a52',
+            dim: '#6b6b8a',
+            text: '#c8c8e0',
+            bright: '#e8e8f5',
+            accent: '#7c6af5',
+            'accent-light': '#a89ef8',
+            'accent-glow': '#7c6af540',
+            teal: '#3dd9c4',
+            'teal-glow': '#3dd9c420',
+          },
+          animation: {
+            'fade-up': 'fadeUp 0.7s ease forwards',
+            'fade-in': 'fadeIn 0.6s ease forwards',
+            'slide-right': 'slideRight 0.6s ease forwards',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float': 'float 6s ease-in-out infinite',
+          },
+          keyframes: {
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(28px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideRight: {
+              '0%': { opacity: '0', transform: 'translateX(-20px)' },
+              '100%': { opacity: '1', transform: 'translateX(0)' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: #0a0a0f; color: #c8c8e0; font-family: 'DM Sans', sans-serif; }
+
+    /* ── Keyframes ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.6;
+    }
+
+    /* Grid background */
+    .grid-bg {
+      background-image:
+        linear-gradient(rgba(124, 106, 245, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124, 106, 245, 0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Glow effects */
+    .glow-accent { box-shadow: 0 0 40px rgba(124, 106, 245, 0.25); }
+    .glow-teal { box-shadow: 0 0 40px rgba(61, 217, 196, 0.15); }
+    .text-glow { text-shadow: 0 0 40px rgba(124, 106, 245, 0.5); }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #a89ef8 0%, #7c6af5 40%, #3dd9c4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-text-warm {
+      background: linear-gradient(135deg, #e8e8f5 0%, #a89ef8 60%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Nav */
+    nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+
+    /* Scroll animations */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+    /* Hero stagger animations */
+    .hero-anim {
+      animation: fadeUp 0.7s ease both;
+    }
+    .hero-anim-fade {
+      animation: fadeIn 0.9s ease both;
+    }
+    .delay-0  { animation-delay: 0.05s; }
+    .delay-1  { animation-delay: 0.18s; }
+    .delay-2  { animation-delay: 0.30s; }
+    .delay-3  { animation-delay: 0.42s; }
+    .delay-4  { animation-delay: 0.54s; }
+    .delay-5  { animation-delay: 0.68s; }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #0a0a0f; }
+    ::-webkit-scrollbar-thumb { background: #3a3a52; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: #7c6af5; }
+
+    .animate-float      { animation: float 6s ease-in-out infinite; }
+    .animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
+
+    /* Skill bar */
+    .skill-bar { background: #1e1e2e; border-radius: 99px; height: 4px; overflow: hidden; }
+    .skill-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #7c6af5, #3dd9c4); transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); width: 0; }
+
+    /* Card hover */
+    .project-card { transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(124, 106, 245, 0.2); border-color: #7c6af5; }
+
+    /* Tag badge */
+    .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 500; letter-spacing: 0.03em; }
+    .badge-accent { background: rgba(124, 106, 245, 0.15); color: #a89ef8; border: 1px solid rgba(124, 106, 245, 0.3); }
+    .badge-teal { background: rgba(61, 217, 196, 0.1); color: #3dd9c4; border: 1px solid rgba(61, 217, 196, 0.25); }
+    .badge-muted { background: rgba(255,255,255,0.05); color: #6b6b8a; border: 1px solid rgba(255,255,255,0.08); }
+
+    /* Button */
+    .btn-primary {
+      background: linear-gradient(135deg, #7c6af5, #5b4de0);
+      color: white;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn-primary:hover { box-shadow: 0 8px 30px rgba(124, 106, 245, 0.45); transform: translateY(-2px); }
+    .btn-secondary {
+      background: transparent;
+      color: #c8c8e0;
+      padding: 11px 28px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      border: 1px solid #1e1e2e;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { border-color: #7c6af5; color: #a89ef8; background: rgba(124, 106, 245, 0.08); }
+    .btn-ghost {
+      background: transparent;
+      color: #6b6b8a;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid #1e1e2e;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+    .btn-ghost:hover { color: #c8c8e0; border-color: #3a3a52; }
+
+    /* Hero orb */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    /* Timeline */
+    .timeline-dot { position: relative; }
+    .timeline-dot::before {
+      content: '';
+      position: absolute;
+      left: -33px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #7c6af5;
+      box-shadow: 0 0 0 3px rgba(124, 106, 245, 0.2);
+    }
+
+    @media (max-width: 768px) {
+      .hero-title { font-size: 2.4rem !important; }
+    }
+  </style>
+</head>
+<body class="grid-bg">
+
+<!-- ═══════════════════ NAV ═══════════════════ -->
+<nav class="fixed top-0 left-0 right-0 z-50 border-b border-border bg-ink/80">
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#" class="font-display font-800 text-bright text-lg tracking-tight">
+      MIS<span class="text-accent">.</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm text-dim font-body">
+      <a href="#about" class="hover:text-bright transition-colors">About</a>
+      <a href="#skills" class="hover:text-bright transition-colors">Skills</a>
+      <a href="#projects" class="hover:text-bright transition-colors">Projects</a>
+      <a href="#experience" class="hover:text-bright transition-colors">Experience</a>
+      <a href="#contact" class="hover:text-bright transition-colors">Contact</a>
+    </div>
+    <a href="#contact" class="btn-primary text-sm py-2 px-5">Hire Me</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="home" class="relative min-h-screen flex items-center pt-16 overflow-hidden">
+
+  <!-- Background orbs -->
+  <div class="orb w-96 h-96 bg-accent/20 top-20 -left-32"></div>
+  <div class="orb w-80 h-80 bg-teal/15 bottom-10 right-0"></div>
+  <div class="orb w-64 h-64 bg-accent/10 top-1/2 left-1/2 -translate-x-1/2"></div>
+
+  <div class="max-w-6xl mx-auto px-6 py-24 relative z-10 w-full">
+    <div class="flex flex-col items-center text-center">
+
+      <!-- Status badge -->
+      <div class="hero-anim delay-0 inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full border border-accent/30 bg-accent/5">
+        <span class="w-2 h-2 rounded-full bg-teal animate-pulse-slow inline-block"></span>
+        <span class="text-xs font-body text-teal font-medium tracking-wider uppercase">Open for Opportunities</span>
+      </div>
+
+      <h1 class="hero-anim delay-1 font-display font-800 leading-[1.1] mb-5" style="font-size:3.5rem; font-weight:800;">
+        <span class="gradient-text-warm">Mohamad Imam</span><br/>
+        <span class="text-bright">Salji</span>
+      </h1>
+
+      <p class="hero-anim delay-2 text-lg text-dim font-body font-300 mb-3 leading-relaxed">
+        Software Engineer with <span class="text-accent-light font-500">3+ years experience</span> in Backend Development
+      </p>
+      <p class="hero-anim delay-3 text-sm text-dim font-body leading-relaxed mb-10 max-w-2xl">
+        Spesialis <span class="text-text">Laravel &amp; CodeIgniter</span>, berpengalaman membangun REST API dan aplikasi web scalable menggunakan React, TypeScript, dan Tailwind CSS.
+      </p>
+
+      <div class="hero-anim delay-4 flex flex-wrap justify-center gap-3 mb-12">
+        <a href="#projects" class="btn-primary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          Lihat Project
+        </a>
+        <a href="#" class="btn-secondary">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Download CV
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+<!-- ═══════════════════ ABOUT ═══════════════════ -->
+<section id="about" class="py-28 border-t border-border">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <!-- Left: Decorative -->
+      <div class="reveal-left">
+        <div class="relative">
+          <div class="absolute inset-0 bg-gradient-to-br from-accent/20 to-teal/10 rounded-2xl blur-2xl"></div>
+          <div class="relative bg-card border border-border rounded-2xl p-8">
+            <div class="grid grid-cols-2 gap-4">
+              <!-- Stat cards -->
+              <div class="bg-surface border border-border rounded-xl p-5">
+                <div class="text-3xl font-display font-800 gradient-text mb-1">3+</div>
+                <div class="text-xs text-dim">Years Backend Dev</div>
+              </div>
+              <div class="bg-surface border border-border rounded-xl p-5">
+                <div class="text-3xl font-display font-800 text-teal mb-1">10+</div>
+                <div class="text-xs text-dim">Projects Delivered</div>
+              </div>
+              <div class="bg-surface border border-border rounded-xl p-5">
+                <div class="text-3xl font-display font-800 gradient-text mb-1">5+</div>
+                <div class="text-xs text-dim">Tech Stacks</div>
+              </div>
+              <div class="bg-surface border border-border rounded-xl p-5">
+                <div class="text-3xl font-display font-800 text-teal mb-1">∞</div>
+                <div class="text-xs text-dim">Coffee Consumed</div>
+              </div>
+            </div>
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2 mt-5">
+              <span class="badge badge-accent">Laravel</span>
+              <span class="badge badge-accent">CodeIgniter</span>
+              <span class="badge badge-teal">REST API</span>
+              <span class="badge badge-teal">React</span>
+              <span class="badge badge-muted">TypeScript</span>
+              <span class="badge badge-muted">MySQL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Text -->
+      <div class="reveal">
+        <div class="inline-flex items-center gap-2 mb-4">
+          <div class="w-6 h-px bg-accent"></div>
+          <span class="text-xs text-accent font-medium tracking-widest uppercase">About Me</span>
+        </div>
+        <h2 class="font-display text-4xl font-800 text-bright mb-6 leading-tight">
+          Passionate about building<br/><span class="gradient-text">scalable systems</span>
+        </h2>
+        <p class="text-text font-body leading-relaxed mb-4">
+          Saya adalah Software Engineer dengan pengalaman <strong class="text-bright">3 tahun sebagai Backend Developer</strong> menggunakan Laravel dan CodeIgniter. Saya terbiasa membangun REST API yang handal, mengelola database relasional, dan mengembangkan sistem yang efisien dan scalable.
+        </p>
+        <p class="text-dim font-body leading-relaxed mb-8">
+          Selain backend, saya juga memiliki pengalaman solid di sisi frontend menggunakan <span class="text-text">React, TypeScript, jQuery, dan Tailwind CSS</span> — memungkinkan saya berkolaborasi efektif di seluruh stack dan memahami kebutuhan end-to-end sebuah aplikasi web.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="#projects" class="btn-primary">View Projects</a>
+          <a href="#contact" class="btn-secondary">Get In Touch</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SKILLS ═══════════════════ -->
+<section id="skills" class="py-28 border-t border-border">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <div class="inline-flex items-center gap-2 mb-4">
+        <div class="w-6 h-px bg-accent"></div>
+        <span class="text-xs text-accent font-medium tracking-widest uppercase">Tech Stack</span>
+        <div class="w-6 h-px bg-accent"></div>
+      </div>
+      <h2 class="font-display text-4xl font-800 text-bright">Skills & Expertise</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+      <!-- Backend -->
+      <div class="reveal bg-card border border-border rounded-2xl p-6 hover:border-accent/40 transition-colors">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+            <svg width="18" height="18" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div>
+            <div class="font-display font-700 text-bright text-sm">Backend</div>
+            <div class="text-xs text-dim">Core Expertise</div>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="skill-item" >
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">PHP</span>
+              <span class="text-xs text-teal font-medium">Intermediate</span>
+            </div>
+          </div>
+          <div class="skill-item" >
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">Laravel</span>
+              <span class="text-xs text-accent font-medium">Advanced</span>
+            </div>
+          </div>
+          <div class="skill-item" data-level="90">
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">CodeIgniter</span>
+              <span class="text-xs text-accent font-medium">Advanced</span>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">REST API</span>
+              <span class="text-xs text-accent font-medium">Advanced</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frontend -->
+      <div class="reveal bg-card border border-border rounded-2xl p-6 hover:border-teal/40 transition-colors" style="transition-delay:0.1s">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+            <svg width="18" height="18" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <div>
+            <div class="font-display font-700 text-bright text-sm">Frontend</div>
+            <div class="text-xs text-dim">Supporting Skills</div>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">React</span>
+              <span class="text-xs text-teal font-medium">Intermediate</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">TypeScript</span>
+              <span class="text-xs text-teal font-medium">Basic</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">Javascript</span>
+              <span class="text-xs text-teal font-medium">Intermediate</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">Tailwind CSS</span>
+              <span class="text-xs text-accent font-medium">Advanced</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">Bootstrap</span>
+              <span class="text-xs text-accent font-medium">Advanced</span>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">jQuery</span>
+              <span class="text-xs text-teal font-medium">Intermediate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Database -->
+      <div class="reveal bg-card border border-border rounded-2xl p-6 hover:border-accent/40 transition-colors" style="transition-delay:0.2s">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+            <svg width="18" height="18" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <div>
+            <div class="font-display font-700 text-bright text-sm">Database</div>
+            <div class="text-xs text-dim">Data Management</div>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between mb-1.5">
+              <span class="text-sm text-text font-body">MySQL</span>
+              <span class="text-xs text-accent font-medium">Advanced</span>
+            </div>
+            <div class="skill-bar"><div class="skill-fill" data-width="90%"></div></div>
+          </div>
+          <div class="mt-6">
+            <div class="text-xs text-dim mb-3">Expertise</div>
+            <div class="flex flex-wrap gap-2">
+              <span class="badge badge-muted">SQL Query</span>
+              <span class="badge badge-muted">Relations</span>
+              <span class="badge badge-muted">Query Optimization</span>
+              <span class="badge badge-muted">Schema Design</span>
+              <span class="badge badge-muted">Indexing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tools -->
+      <div class="reveal bg-card border border-border rounded-2xl p-6 hover:border-teal/40 transition-colors" style="transition-delay:0.3s">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+            <svg width="18" height="18" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <div>
+            <div class="font-display font-700 text-bright text-sm">Tools & DevOps</div>
+            <div class="text-xs text-dim">Workflow</div>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 p-3 rounded-lg bg-surface border border-border">
+            <span class="w-2 h-2 rounded-full bg-accent inline-block"></span>
+            <span class="text-sm text-text">Git & GitHub</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-lg bg-surface border border-border">
+            <span class="w-2 h-2 rounded-full bg-teal inline-block"></span>
+            <span class="text-sm text-text">Postman</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-lg bg-surface border border-border">
+            <span class="w-2 h-2 rounded-full bg-accent inline-block"></span>
+            <span class="text-sm text-text">Docker</span>
+          </div>
+          <div class="flex items-center gap-3 p-3 rounded-lg bg-surface border border-border">
+            <span class="w-2 h-2 rounded-full bg-teal inline-block"></span>
+            <span class="text-sm text-text">VS Code</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PROJECTS & CERTIFICATES ═══════════════════ -->
+<section id="projects" class="py-28 border-t border-border">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="text-center mb-10 reveal">
+      <div class="inline-flex items-center gap-2 mb-4">
+        <div class="w-6 h-px bg-accent"></div>
+        <span class="text-xs text-accent font-medium tracking-widest uppercase">Work & Achievements</span>
+        <div class="w-6 h-px bg-accent"></div>
+      </div>
+      <h2 class="font-display text-4xl font-800 text-bright mb-3">Projects & Certificates</h2>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex justify-center mb-8 reveal">
+      <div class="inline-flex bg-card border border-border rounded-xl p-1 gap-1">
+        <button onclick="switchPortfolioTab('projects')" id="ptab-projects" class="ptab-btn px-5 py-2 rounded-lg text-sm font-medium transition-all" style="background:linear-gradient(135deg,#7c6af5,#5b4de0);color:white;">Projects</button>
+        <button onclick="switchPortfolioTab('certs')" id="ptab-certs" class="ptab-btn px-5 py-2 rounded-lg text-sm font-medium transition-all text-dim hover:text-text">Sertifikat</button>
+      </div>
+    </div>
+
+    <!-- PROJECTS PANEL -->
+    <div id="ppanel-projects">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p1')">
+          <div class="h-1 bg-gradient-to-r from-accent to-teal"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              </div>
+              <span class="badge badge-teal text-[10px]">Production</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-accent-light transition-colors">CETO LMS</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Aplikasi yang dibuat untuk memudahkan proses belajar mengajar .</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-accent text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-accent border border-accent/30 rounded-lg hover:bg-accent/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p2')">
+          <div class="h-1 bg-gradient-to-r from-accent to-teal"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              </div>
+              <span class="badge badge-teal text-[10px]">Development</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-accent-light transition-colors">MosherBlox</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Web Jual Beli Robux/Roblox Mudah dan terjangkau digunakan oleh segala kalangan usia</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-teal text-[10px]">React</span>
+              <span class="badge badge-muted text-[10px]">TypeScript</span>
+              <span class="badge badge-muted text-[10px]">Node Js</span>
+              <span class="badge badge-teal text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-accent border border-accent/30 rounded-lg hover:bg-accent/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <!-- Card: E-Commerce API -->
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p3')" style="transition-delay:.05s">
+          <div class="h-1 bg-gradient-to-r from-teal to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-2.3 2.3A1 1 0 006 17h12m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              </div>
+              <span class="badge badge-accent text-[10px]">Production</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">Danamart SCF</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Danamart adalah platform aplikasi urun dana (securities crowdfunding) Indonesia untuk investasi keuangan atau dana pembiayaan dengan mudah, cepat, dan aman.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-teal text-[10px]">CodeIgniter</span>
+              <span class="badge badge-muted text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-teal border border-teal/30 rounded-lg hover:bg-teal/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <!-- Card: Inventory -->
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p4')" style="transition-delay:.1s">
+          <div class="h-1 bg-gradient-to-r from-accent to-teal"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+              </div>
+              <span class="badge badge-muted text-[10px]">Internal</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-accent-light transition-colors">KPRTNI</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Sistem manajemen inventaris real-time dengan tracking multi-gudang dan laporan otomatis.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-teal text-[10px]">CodeIgniter</span>
+              <span class="badge badge-muted text-[10px]">React</span>
+              <span class="badge badge-muted text-[10px]">TypeScript</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-accent border border-accent/30 rounded-lg hover:bg-accent/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <!-- Card: School Management -->
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p5')" style="transition-delay:.15s">
+          <div class="h-1 bg-gradient-to-r from-teal to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422A12.1 12.1 0 0122 17.5c0 1-1 2-2 2H4c-1 0-2-1-2-2a12.1 12.1 0 013.84-6.922L12 14z"/></svg>
+              </div>
+              <span class="badge badge-teal text-[10px]">SaaS</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">Akunting KPR</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Platform akademik komprehensif untuk absensi, nilai, dan komunikasi orang tua-sekolah.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-muted text-[10px]">jQuery</span>
+              <span class="badge badge-muted text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-teal border border-teal/30 rounded-lg hover:bg-teal/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <!-- Card: Chatbot Coreo -->
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p6')" style="transition-delay:.2s">
+          <div class="h-1 bg-gradient-to-r from-accent to-teal"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+              </div>
+              <span class="badge badge-accent text-[10px]">AI / Bot</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-accent-light transition-colors">Chatbot Coreo</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Chatbot WhatsApp terintegrasi Dialogflow & GPT API, deploy di server dengan monitoring aktif.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Dialogflow</span>
+              <span class="badge badge-teal text-[10px]">GPT API</span>
+              <span class="badge badge-muted text-[10px]">Watzap</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-accent border border-accent/30 rounded-lg hover:bg-accent/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <!-- Card: Accounting App -->
+        <!-- <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p6')" style="transition-delay:.25s">
+          <div class="h-1 bg-gradient-to-r from-teal to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <span class="badge badge-muted text-[10px]">Freelance</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">Accounting Web App</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Aplikasi akuntansi berbasis web dengan form repeater Kas & Bank, Buku Besar, dan laporan keuangan.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-muted text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-teal border border-teal/30 rounded-lg hover:bg-teal/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p6')" style="transition-delay:.25s">
+          <div class="h-1 bg-gradient-to-r from-teal to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <span class="badge badge-muted text-[10px]">Student</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">SIM SPP</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Aplikasi akuntansi berbasis web dengan form repeater Kas & Bank, Buku Besar, dan laporan keuangan.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-muted text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-teal border border-teal/30 rounded-lg hover:bg-teal/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p6')" style="transition-delay:.25s">
+          <div class="h-1 bg-gradient-to-r from-teal to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <span class="badge badge-muted text-[10px]">Student</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">SIM Barang</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Aplikasi akuntansi berbasis web dengan form repeater Kas & Bank, Buku Besar, dan laporan keuangan.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-muted text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-teal border border-teal/30 rounded-lg hover:bg-teal/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p6')" style="transition-delay:.25s">
+          <div class="h-1 bg-gradient-to-r from-teal to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <span class="badge badge-muted text-[10px]">Student</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">Monitoring SISWA</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Aplikasi akuntansi berbasis web dengan form repeater Kas & Bank, Buku Besar, dan laporan keuangan.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-muted text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-teal border border-teal/30 rounded-lg hover:bg-teal/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p6')" style="transition-delay:.25s">
+          <div class="h-1 bg-gradient-to-r from-teal to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <span class="badge badge-muted text-[10px]">Student</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">Absensi</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Aplikasi akuntansi berbasis web dengan form repeater Kas & Bank, Buku Besar, dan laporan keuangan.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-muted text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-teal border border-teal/30 rounded-lg hover:bg-teal/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p6')" style="transition-delay:.25s">
+          <div class="h-1 bg-gradient-to-r from-teal to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <span class="badge badge-muted text-[10px]">Internship</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">Tropisianimal Web</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Aplikasi akuntansi berbasis web dengan form repeater Kas & Bank, Buku Besar, dan laporan keuangan.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-muted text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-teal border border-teal/30 rounded-lg hover:bg-teal/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p6')" style="transition-delay:.25s">
+          <div class="h-1 bg-gradient-to-r from-teal to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <span class="badge badge-muted text-[10px]">Freelance</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">Treatment Book</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Aplikasi akuntansi berbasis web dengan form repeater Kas & Bank, Buku Besar, dan laporan keuangan.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-muted text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-teal border border-teal/30 rounded-lg hover:bg-teal/10 transition-colors">Detail →</button>
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" onclick="openModal('p6')" style="transition-delay:.25s">
+          <div class="h-1 bg-gradient-to-r from-teal to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              </div>
+              <span class="badge badge-muted text-[10px]">Student</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">PPDB</h3>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Aplikasi akuntansi berbasis web dengan form repeater Kas & Bank, Buku Besar, dan laporan keuangan.</p>
+            <div class="flex flex-wrap gap-1 mb-4">
+              <span class="badge badge-accent text-[10px]">Laravel</span>
+              <span class="badge badge-muted text-[10px]">MySQL</span>
+            </div>
+            <button class="w-full py-2 text-xs font-600 text-teal border border-teal/30 rounded-lg hover:bg-teal/10 transition-colors">Detail →</button>
+          </div>
+        </div> -->
+
+      </div>
+    </div>
+
+    <!-- CERTIFICATES PANEL -->
+    <div id="ppanel-certs" class="hidden">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group">
+          <div class="h-1 bg-gradient-to-r from-yellow-500 to-orange-400"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#eab308" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <span class="badge text-[10px]" style="background:rgba(234,179,8,.1);color:#eab308;border:1px solid rgba(234,179,8,.3);">Laravel</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-yellow-400 transition-colors">Mahir Website dengan Laravel</h3>
+            <p class="text-dim text-xs mb-3">Coding Studio</p>
+            <img src="/img/courselaravel.png" alt="">
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group"  style="transition-delay:.05s">
+          <div class="h-1 bg-gradient-to-r from-blue-500 to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#3b82f6" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <span class="badge text-[10px]" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3);">Dicoding</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-blue-400 transition-colors">Belajar Dasar Pemrograman Web</h3>
+            <p class="text-dim text-xs mb-3">Dicoding Indonesia</p>
+            <img src="/img/webdasar.png" alt="">
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group"  style="transition-delay:.15s">
+          <div class="h-1 bg-gradient-to-r from-green-500 to-teal"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#22c55e" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <span class="badge text-[10px]" style="background:rgba(34,197,94,.1);color:#22c55e;border:1px solid rgba(34,197,94,.3);">Internship</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-green-400 transition-colors">Intern At PT.Laskar Teknologi Mulya</h3>
+            <p class="text-dim text-xs mb-3">CyberLabs</p>
+            <img src="/img/CyberLabs (1).png" alt="">
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" style="transition-delay:.2s">
+          <div class="h-1 bg-gradient-to-r from-orange-500 to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#f97316" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <span class="badge text-[10px]" style="background:rgba(249,115,22,.1);color:#f97316;border:1px solid rgba(249,115,22,.3);">Seminar</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-orange-400 transition-colors">Membangun Karir IT Sejak Dini, Kiat & Peluang Di Era Digital</h3>
+            <p class="text-dim text-xs mb-3">Universitas BSI</p>
+            <img src="/img/bsi2.jpg" alt="">
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" style="transition-delay:.2s">
+          <div class="h-1 bg-gradient-to-r from-orange-500 to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#f97316" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <span class="badge text-[10px]" style="background:rgba(249,115,22,.1);color:#f97316;border:1px solid rgba(249,115,22,.3);">Workshop</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-orange-400 transition-colors">Database Expert</h3>
+            <p class="text-dim text-xs mb-3">Universitas BSI</p>
+            <img src="/img/database.jpg" alt="">
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" style="transition-delay:.2s">
+          <div class="h-1 bg-gradient-to-r from-orange-500 to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#f97316" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <span class="badge text-[10px]" style="background:rgba(249,115,22,.1);color:#f97316;border:1px solid rgba(249,115,22,.3);">udemy</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-orange-400 transition-colors">React - The Complete Guide
+with React Hook Redux</h3>
+            <p class="text-dim text-xs mb-3">Udemy</p>
+            <img src="/img/react.jpg" alt="">
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group" style="transition-delay:.2s">
+          <div class="h-1 bg-gradient-to-r from-orange-500 to-accent"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#f97316" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <span class="badge text-[10px]" style="background:rgba(249,115,22,.1);color:#f97316;border:1px solid rgba(249,115,22,.3);">codepolitan</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-orange-400 transition-colors">JavaScript fundamental</h3>
+            <p class="text-dim text-xs mb-3">codepolitan</p>
+            <img src="/img/Kursus Javascript.png" alt="">
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group"  style="transition-delay:.1s">
+          <div class="h-1 bg-gradient-to-r from-accent to-teal"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <span class="badge badge-accent text-[10px]">BNSP</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-accent-light transition-colors">Junior Programmer</h3>
+            <p class="text-dim text-xs mb-3">BNSP Sertifikat</p>
+            <img src="/img/BNSP sertifikat.jpeg" alt="">
+          </div>
+        </div>
+
+        <div class="pcard reveal bg-card border border-border rounded-xl overflow-hidden cursor-pointer group"  style="transition-delay:.1s">
+          <div class="h-1 bg-gradient-to-r from-accent to-teal"></div>
+          <div class="p-5">
+            <div class="flex items-start justify-between mb-3">
+              <div class="w-9 h-9 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+                <svg width="16" height="16" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+              </div>
+              <span class="badge badge-accent text-[10px]">Danamart</span>
+            </div>
+            <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-accent-light transition-colors">Packlaring Danamart</h3>
+            <p class="text-dim text-xs mb-3">PT. Dana Agung Nusantara</p>
+            <img src="/img/danamart.jpg" alt="">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ MODAL ═══════════════════ -->
+<div id="modal-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden" onclick="closeModalOutside(event)">
+  <div class="absolute inset-0 bg-ink/80 backdrop-blur-sm"></div>
+  <div id="modal-box" class="relative bg-card border border-border rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto" style="animation: fadeUp 0.25s ease both;">
+    <div id="modal-top-bar" class="h-1 rounded-t-2xl bg-gradient-to-r from-accent to-teal"></div>
+    <div class="p-7">
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <div id="modal-badge" class="mb-2"></div>
+          <h2 id="modal-title" class="font-display text-xl font-800 text-bright"></h2>
+          <p id="modal-subtitle" class="text-xs text-dim mt-1"></p>
+        </div>
+        <button onclick="closeModal()" class="w-8 h-8 rounded-lg bg-surface border border-border flex items-center justify-center text-dim hover:text-text transition-colors flex-shrink-0 ml-4">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div id="modal-body"></div>
+      <div id="modal-actions" class="flex gap-3 mt-6 pt-5 border-t border-border"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ptab-btn.active-ptab { background: linear-gradient(135deg, #7c6af5, #5b4de0) !important; color: white !important; }
+  .ppanel-hidden { display: none; }
+  .pcard { transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+  .pcard:hover { transform: translateY(-4px); border-color: #7c6af5; box-shadow: 0 12px 40px rgba(124,106,245,.18); }
+  .line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  #modal-overlay:not(.hidden) { display:flex; }
+</style>
+
+<script>
+// ── Tab switch ──
+function switchPortfolioTab(tab) {
+  ['projects','certs'].forEach(t => {
+    document.getElementById('ppanel-' + t).classList.toggle('hidden', t !== tab);
+    const btn = document.getElementById('ptab-' + t);
+    if (t === tab) {
+      btn.style.background = 'linear-gradient(135deg,#7c6af5,#5b4de0)';
+      btn.style.color = 'white';
+    } else {
+      btn.style.background = '';
+      btn.style.color = '';
+    }
+  });
+}
+
+// ── Modal data ──
+const modalData = {
+  p1: {
+    title: 'Ceto (Centre for education and Training Online)',
+    subtitle: 'Laravel · Mysql',
+    badge: '<span class="badge badge-teal">Production</span>',
+    bar: 'from-accent to-teal',
+    desc: 'Saya dengan tim saya yang berkelulusan dari SMK Wikrama Bogor telah berhasil menyelesaikan sebuah project dari 𝐊𝐞𝐦𝐞𝐧𝐭𝐞𝐫𝐢𝐚𝐧 𝐋𝐮𝐚𝐫 𝐍𝐞𝐠𝐞𝐫𝐢 𝐑𝐞𝐩𝐮𝐛𝐥𝐢𝐤 𝐈𝐧𝐝𝐨𝐧𝐞𝐬𝐢𝐚 untuk membuat aplikasi Learning Management System(LMS) bernama 𝐂𝐄𝐓𝐎 (𝐂𝐞𝐧𝐭𝐫𝐞 𝐟𝐨𝐫 𝐄𝐝𝐮𝐜𝐚𝐭𝐢𝐨𝐧 𝐚𝐧𝐝 𝐓𝐫𝐚𝐢𝐧𝐢𝐧𝐠 𝐎𝐧𝐥𝐢𝐧𝐞). Aplikasi yang dibuat untuk memudahkan proses belajar mengajar .',
+    highlights: ['Built scalable system', 'Optimized complex database queries', 'Role-based access control'],
+    features: ['Absensi', 'Agenda Kegiatan', 'Pengumpulan Tugas', 'Forum Diskusi', 'Penilaian Tugas', 'Export laporan ke Excel/PDF'],
+    stack: ['Laravel', 'MySQL'],
+    github: '#',
+    demo: '#',
+  },
+  p2: {
+    title: 'MosherBlox',
+    subtitle: 'Backend: Laravel · Database: MySQL · Frontend: ReactTS · ServiceWa: NodeJs',
+    badge: '<span class="badge badge-accent">Freelance</span>',
+    bar: 'from-teal to-accent',
+    desc: '',
+    highlights: ['Handles thousands of daily transactions', 'Optimized for high-concurrency', 'Secure payment integration'],
+    features: ['JWT Authentication', 'Product & kategori management', 'Order & transaction processing', 'Payment gateway integration', 'Cart System', 'Analytics dashboard & reporting', 'Service Integration'],
+    stack: ['Laravel', 'CodeIgniter', 'MySQL', 'jQuery', 'REST API', 'JWT'],
+    github: 'https://github.com/imamsalji',
+    demo: '#',
+  },
+  p3: {
+    title: 'SCF Application',
+    subtitle: 'Backend: CodeIgniter 3 & CodeIgniter 4· Frontend: HTML + CSS + Javascript + Jquery',
+    badge: '<span class="badge badge-accent">Staff</span>',
+    bar: 'from-accent to-teal',
+    desc: 'Danamart adalah penyelenggara urun dana berbasis teknologi informasi di Indonesia sesuai prinsip ESG (Environmental, Social, Governance). ',
+    highlights: ['Third-Party API', 'Automated daily reporting', 'Securities Crowdfunding'],
+    features: ['JWT Authentication','Role-based access ', 'Money in/out management', 'REST API integration', 'Third Party Integration', 'Payment Gateaway', 'Auto-generate Report'],
+    stack: ['CodeIgniter', 'PHP', 'MySQL', 'REST API', 'Javascript', 'Jquery'],
+    github: '#',
+    demo: '#',
+  },
+  p4: {
+    title: 'School Management System',
+    subtitle: 'Backend: Laravel · Frontend: jQuery + Bootstrap',
+    badge: '<span class="badge badge-teal">SaaS</span>',
+    bar: 'from-teal to-accent',
+    desc: 'Platform manajemen sekolah komprehensif yang mendigitalisasi seluruh proses akademik — dari absensi, nilai, hingga komunikasi orang tua. Digunakan aktif oleh ratusan siswa dan staf pengajar.',
+    highlights: ['Used by hundreds of active users', 'Full academic digitization', 'Parent communication portal'],
+    features: ['Multi-role auth (admin, guru, siswa, ortu)', 'Manajemen kelas & jadwal', 'Input & rekap nilai', 'Absensi digital', 'REST API untuk mobile', 'Export laporan akademik'],
+    stack: ['Laravel', 'MySQL', 'jQuery', 'Bootstrap', 'REST API'],
+    github: 'https://github.com/imamsalji',
+    demo: '#',
+  },
+  p5: {
+    title: 'WhatsApp Chatbot — Coreo',
+    subtitle: 'Platform: WhatsApp via Watzap · AI: Dialogflow + GPT',
+    badge: '<span class="badge badge-accent">AI / Bot</span>',
+    bar: 'from-accent to-teal',
+    desc: 'Chatbot WhatsApp terintegrasi yang mampu memahami dan merespons pengguna secara natural. Terhubung ke sistem backend via API dan di-deploy di server dengan monitoring berkelanjutan.',
+    highlights: ['Natural language understanding', 'Third-party API integration', 'Auto-deploy & monitoring'],
+    features: ['NLP dengan Dialogflow / GPT API', 'Integrasi platform WhatsApp (Watzap)', 'Alur percakapan terstruktur', 'Koneksi ke sistem backend', 'Deployment & server monitoring', 'Dokumentasi teknis & pelatihan user'],
+    stack: ['Dialogflow', 'GPT API', 'Watzap', 'Node.js', 'REST API'],
+    github: 'https://github.com/imamsalji',
+    demo: '#',
+  },
+  p6: {
+    title: 'Accounting Web Application',
+    subtitle: 'Freelance · PT Kreasi Asia · Remote',
+    badge: '<span class="badge badge-muted">Freelance</span>',
+    bar: 'from-teal to-accent',
+    desc: 'Aplikasi akuntansi berbasis web untuk PT Kreasi Asia. Menangani pencatatan kas & bank dengan form repeater, Buku Besar dengan filter canggih, dan laporan keuangan otomatis.',
+    highlights: ['Complex form repeater implementation', 'Advanced filtering & reporting', 'Full user documentation'],
+    features: ['CRUD Form Repeater Kas & Bank', 'Filter dinamis Buku Besar', 'Laporan keuangan otomatis', 'Export laporan', 'Dokumentasi pengguna lengkap'],
+    stack: ['Laravel', 'MySQL', 'jQuery', 'Bootstrap'],
+    github: 'https://github.com/imamsalji',
+    demo: '#',
+  },
+  // Certificates
+  c1: {
+    title: 'Belajar Membuat Aplikasi Back-End untuk Pemula',
+    subtitle: 'Dicoding Indonesia',
+    badge: '<span class="badge" style="background:rgba(234,179,8,.1);color:#eab308;border:1px solid rgba(234,179,8,.3);">Sertifikat</span>',
+    bar: 'from-yellow-500 to-orange-400',
+    desc: 'Sertifikasi resmi dari Dicoding Indonesia yang mencakup pembuatan REST API, server-side programming, dan best practice pengembangan backend modern.',
+    highlights: ['REST API development', 'Node.js / PHP server-side', 'Dicoding certified'],
+    features: ['Membuat REST API dari scratch', 'Pengelolaan routing dan middleware', 'Database integration', 'Validasi dan error handling', 'Deployment dasar'],
+    stack: ['Node.js', 'REST API', 'Hapi.js'],
+    github: null,
+    demo: '#',
+    isCert: true,
+  },
+  c2: {
+    title: 'Belajar Dasar Pemrograman JavaScript',
+    subtitle: 'Dicoding Indonesia',
+    badge: '<span class="badge" style="background:rgba(59,130,246,.1);color:#3b82f6;border:1px solid rgba(59,130,246,.3);">Sertifikat</span>',
+    bar: 'from-blue-500 to-accent',
+    desc: 'Sertifikasi fundamental JavaScript dari Dicoding, mencakup konsep dasar hingga pemrograman asinkronus dan manipulasi DOM.',
+    highlights: ['JavaScript fundamentals', 'Async programming', 'DOM manipulation'],
+    features: ['Variabel, tipe data, dan operator', 'Function dan closure', 'Array & Object manipulation', 'Asynchronous JS (Promise, Async/Await)', 'DOM manipulation dasar'],
+    stack: ['JavaScript', 'ES6+'],
+    github: null,
+    demo: '#',
+    isCert: true,
+  },
+  c3: {
+    title: 'Belajar Dasar Git dengan GitHub',
+    subtitle: 'Dicoding Indonesia',
+    badge: '<span class="badge badge-accent">Sertifikat</span>',
+    bar: 'from-accent to-teal',
+    desc: 'Penguasaan version control menggunakan Git dan GitHub untuk kolaborasi tim dalam pengembangan software profesional.',
+    highlights: ['Version control mastery', 'Team collaboration workflow', 'GitHub best practices'],
+    features: ['Git init, commit, push, pull', 'Branching & merging strategy', 'Resolving merge conflicts', 'GitHub collaboration workflow', 'Pull request & code review'],
+    stack: ['Git', 'GitHub'],
+    github: null,
+    demo: '#',
+    isCert: true,
+  },
+  c4: {
+    title: 'Cloud Practitioner Essentials',
+    subtitle: 'Dicoding Indonesia',
+    badge: '<span class="badge" style="background:rgba(34,197,94,.1);color:#22c55e;border:1px solid rgba(34,197,94,.3);">Sertifikat</span>',
+    bar: 'from-green-500 to-teal',
+    desc: 'Pemahaman fundamental tentang cloud computing, layanan AWS, dan praktik terbaik dalam arsitektur cloud modern.',
+    highlights: ['Cloud computing fundamentals', 'AWS services overview', 'Cloud architecture basics'],
+    features: ['Konsep dasar cloud computing', 'Layanan AWS (EC2, S3, RDS)', 'Security & compliance cloud', 'Pricing & billing model', 'Cloud deployment strategies'],
+    stack: ['AWS', 'Cloud Computing'],
+    github: null,
+    demo: '#',
+    isCert: true,
+  },
+  c5: {
+    title: 'Workshop Web Development & API',
+    subtitle: 'Universitas Bina Sarana Informatika (BSI)',
+    badge: '<span class="badge" style="background:rgba(249,115,22,.1);color:#f97316;border:1px solid rgba(249,115,22,.3);">Workshop</span>',
+    bar: 'from-orange-500 to-accent',
+    desc: 'Seminar dan workshop intensif tentang pengembangan web modern dan desain API yang diselenggarakan oleh Universitas BSI.',
+    highlights: ['Modern web development', 'RESTful API design', 'Industry best practices'],
+    features: ['REST API design principles', 'Frontend-backend integration', 'Authentication best practices', 'Performance optimization', 'Live coding session'],
+    stack: ['Web Development', 'REST API', 'PHP', 'JavaScript'],
+    github: null,
+    demo: null,
+    isCert: true,
+  },
+};
+
+function openModal(id) {
+  const d = modalData[id];
+  if (!d) return;
+  document.getElementById('modal-title').textContent = d.title;
+  document.getElementById('modal-subtitle').textContent = d.subtitle;
+  document.getElementById('modal-badge').innerHTML = d.badge;
+  document.getElementById('modal-top-bar').className = 'h-1 rounded-t-2xl bg-gradient-to-r ' + d.bar;
+
+  const featuresHtml = d.features.map(f => `<li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>${f}</li>`).join('');
+  const highlightsHtml = d.highlights.map(h => `<span class="inline-flex items-center gap-1 text-xs text-teal"><svg width="10" height="10" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>${h}</span>`).join('');
+  const stackHtml = d.stack.map(s => `<span class="badge badge-accent text-[11px]">${s}</span>`).join('');
+
+  document.getElementById('modal-body').innerHTML = `
+    <p class="text-dim text-sm leading-relaxed mb-5">${d.desc}</p>
+    <div class="flex flex-wrap gap-3 mb-5">${highlightsHtml}</div>
+    <div class="bg-surface border border-border rounded-xl p-4 mb-5">
+      <div class="text-xs font-600 text-text mb-3">${d.isCert ? 'Materi yang Dipelajari' : 'Fitur Utama'}</div>
+      <ul class="space-y-2">${featuresHtml}</ul>
+    </div>
+    <div>
+      <div class="text-xs font-600 text-text mb-2">Tech Stack</div>
+      <div class="flex flex-wrap gap-2">${stackHtml}</div>
+    </div>
+  `;
+
+  let actions = '';
+  if (!d.isCert) {
+    if (d.demo && d.demo !== '#') actions += `<a href="${d.demo}" target="_blank" class="btn-primary text-xs py-2 px-4"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>Live Demo</a>`;
+    else actions += `<button disabled class="btn-primary text-xs py-2 px-4 opacity-40 cursor-not-allowed">Live Demo</button>`;
+    if (d.github && d.github !== '#') actions += `<a href="${d.github}" target="_blank" class="btn-ghost text-xs"><svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>GitHub</a>`;
+    else actions += `<a disabled href="${d.github}" target="_blank" class="btn-ghost text-xs opacity-40 cursor-not-allowed"><svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>GitHub</a>`;
+  } else {
+    if (d.demo && d.demo !== '#') actions += `<a href="${d.demo}" target="_blank" class="btn-primary text-xs py-2 px-4">Lihat Sertifikat</a>`;
+    else actions += `<button disabled class="btn-primary text-xs py-2 px-4 opacity-40 cursor-not-allowed">Sertifikat tidak tersedia</button>`;
+  }
+  document.getElementById('modal-actions').innerHTML = actions;
+
+  document.getElementById('modal-overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay') || e.target.classList.contains('absolute')) closeModal();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+
+<!-- ═══════════════════ EXPERIENCE ═══════════════════ -->
+<section id="experience" class="py-28 border-t border-border">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <!-- Header -->
+    <div class="text-center mb-12 reveal">
+      <div class="inline-flex items-center gap-2 mb-4">
+        <div class="w-6 h-px bg-accent"></div>
+        <span class="text-xs text-accent font-medium tracking-widest uppercase">Journey</span>
+        <div class="w-6 h-px bg-accent"></div>
+      </div>
+      <h2 class="font-display text-4xl font-800 text-bright mb-3">Experience & Education</h2>
+      <p class="text-dim text-sm max-w-lg mx-auto">Perjalanan karir dari internship hingga menjadi full-stack developer dengan pengalaman di perusahaan fintech dan startup.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex justify-center mb-10 reveal">
+      <div class="inline-flex bg-card border border-border rounded-xl p-1 gap-1">
+        <button onclick="switchTab('work')" id="tab-work" class="tab-btn active px-5 py-2 rounded-lg text-sm font-medium transition-all bg-accent text-white">
+          Work Experience
+        </button>
+        <button onclick="switchTab('edu')" id="tab-edu" class="tab-btn px-5 py-2 rounded-lg text-sm font-medium transition-all text-dim hover:text-text">
+          Education
+        </button>
+      </div>
+    </div>
+
+    <!-- Work Experience Tab -->
+    <div id="panel-work" class="tab-panel">
+      <div class="relative pl-8 border-l-2 border-border space-y-6 max-w-4xl mx-auto">
+
+        <!-- Freelance – Oct 2024 -->
+        <div class="timeline-dot reveal">
+          <div class="bg-card border border-border rounded-xl p-6 hover:border-accent/40 transition-colors">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-700 text-bright text-base">Freelance & Skill Development</h3>
+                <p class="text-xs text-accent mt-0.5">Full-Stack Developer · Remote</p>
+              </div>
+              <span class="badge badge-teal flex-shrink-0">Okt 2024 – Sekarang</span>
+            </div>
+            <ul class="space-y-1.5 mt-3">
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mengambil project sampingan pembuatan aplikasi web</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mempelajari best practice API security dan authentication</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mengikuti kursus dan latihan pengembangan skill frontend–backend</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mengembangkan aplikasi menggunakan React TypeScript & Laravel</li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="badge badge-accent">Laravel</span>
+              <span class="badge badge-accent">React</span>
+              <span class="badge badge-muted">TypeScript</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coreo – Mar 2024 -->
+        <div class="timeline-dot reveal">
+          <div class="bg-card border border-border rounded-xl p-6 hover:border-teal/40 transition-colors">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-700 text-bright text-base">Software Development</h3>
+                <p class="text-xs text-teal mt-0.5">Coreo</p>
+              </div>
+              <span class="badge badge-muted flex-shrink-0">Mar 2024 – Jun 2024</span>
+            </div>
+            <ul class="space-y-1.5 mt-3">
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Menentukan tujuan chatbot, alur percakapan, dan platform yang digunakan (WhatsApp)</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat chatbot menggunakan Dialogflow, Rasa, atau GPT API</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Menghubungkan chatbot dengan sistem pihak ketiga (Watzap)</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Menjalankan chatbot di server serta melakukan update dan pemantauan agar tetap optimal</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Menyusun panduan teknis dan memberikan pelatihan bagi pengguna</li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="badge badge-teal">Dialogflow</span>
+              <span class="badge badge-teal">GPT API</span>
+              <span class="badge badge-muted">WhatsApp API</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danamart – Oct 2021 -->
+        <div class="timeline-dot reveal">
+          <div class="bg-card border border-border rounded-xl overflow-hidden hover:border-accent/40 transition-colors" style="border: 1px solid #1e1e2e;">
+            <!-- Header card dengan accent kuat karena ini yang terlama -->
+            <div class="bg-gradient-to-r from-accent/10 to-teal/5 border-b border-border px-6 py-4 flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h3 class="font-display font-700 text-bright text-base">Back-End Developer & Web Developer</h3>
+                <p class="text-xs text-accent mt-0.5">Danamart · Fintech</p>
+              </div>
+              <div class="flex flex-col items-end gap-1">
+                <span class="badge badge-accent">Okt 2021 – Sep 2024</span>
+                <span class="text-xs text-teal font-medium">~3 Tahun</span>
+              </div>
+            </div>
+            <div class="p-6">
+              <div class="grid md:grid-cols-2 gap-6">
+                <!-- Backend role -->
+                <div>
+                  <div class="flex items-center gap-2 mb-3">
+                    <div class="w-5 h-5 rounded bg-accent/15 border border-accent/30 flex items-center justify-center flex-shrink-0">
+                      <svg width="10" height="10" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+                    </div>
+                    <span class="text-xs font-600 text-accent-light">Back-End</span>
+                  </div>
+                  <ul class="space-y-1.5">
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Membuat dan mengelola logika bisnis aplikasi</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mengimplementasikan algoritma fungsi utama aplikasi</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Merancang dan mengelola database relasional</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Membuat API beserta dokumentasinya</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Integrasi layanan pihak ketiga (payment, email, media sosial)</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Memastikan API aman, cepat, dan mudah diintegrasikan</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Memantau kinerja dan menangani downtime / bug</li>
+                  </ul>
+                </div>
+                <!-- Frontend role -->
+                <div>
+                  <div class="flex items-center gap-2 mb-3">
+                    <div class="w-5 h-5 rounded bg-teal/15 border border-teal/30 flex items-center justify-center flex-shrink-0">
+                      <svg width="10" height="10" fill="none" stroke="#3dd9c4" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    </div>
+                    <span class="text-xs font-600 text-teal">Web Developer</span>
+                  </div>
+                  <ul class="space-y-1.5">
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat tampilan UI menggunakan HTML, CSS, JavaScript</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Mengintegrasikan elemen visual sesuai kebutuhan desain</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Mengidentifikasi dan memperbaiki bug</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Mengoptimalkan kecepatan dan performa situs web</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Menerapkan praktik keamanan terbaik</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat dokumentasi kode dan proyek</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2 mt-5 pt-4 border-t border-border">
+                <span class="badge badge-accent">Laravel</span>
+                <span class="badge badge-accent">CodeIgniter</span>
+                <span class="badge badge-teal">REST API</span>
+                <span class="badge badge-muted">MySQL</span>
+                <span class="badge badge-muted">jQuery</span>
+                <span class="badge badge-muted">JavaScript</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PT Kreasi Asia Web Dev – Mei 2021 -->
+        <div class="timeline-dot reveal">
+          <div class="bg-card border border-border rounded-xl p-6 hover:border-teal/40 transition-colors">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-700 text-bright text-base">Web Developer</h3>
+                <p class="text-xs text-teal mt-0.5">PT Kreasi Asia · Freelance Remote</p>
+              </div>
+              <span class="badge badge-muted flex-shrink-0">Mei 2021 – Agt 2021</span>
+            </div>
+            <p class="text-xs text-dim mb-3">Pembuatan Aplikasi Accounting Berbasis Web</p>
+            <ul class="space-y-1.5">
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat CRUD Form Repeater Kas & Bank</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat Filter untuk Buku Besar</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat laporan dan dokumentasi Pengguna</li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="badge badge-accent">Laravel</span>
+              <span class="badge badge-muted">MySQL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PT Kreasi Asia Backend – Mar 2021 -->
+        <div class="timeline-dot reveal">
+          <div class="bg-card border border-border rounded-xl p-6 hover:border-accent/40 transition-colors">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-700 text-bright text-base">Back-End Developer</h3>
+                <p class="text-xs text-accent mt-0.5">PT Kreasi Asia · Freelance Remote</p>
+              </div>
+              <span class="badge badge-muted flex-shrink-0">Mar 2021 – Apr 2021</span>
+            </div>
+            <p class="text-xs text-dim mb-3">Pembuatan Aplikasi Berbasis Web</p>
+            <ul class="space-y-1.5">
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Membuat CRUD dan menampilkan data yang difilter sesuai kebutuhan client</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Membuat query di Laravel untuk menampilkan laporan & Query Trigger</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Merancang, membuat, dan mengelola database relasional</li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="badge badge-accent">Laravel</span>
+              <span class="badge badge-muted">MySQL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Internship – Oct 2020 -->
+        <div class="timeline-dot reveal">
+          <div class="bg-card border border-border rounded-xl p-6 hover:border-muted/40 transition-colors">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-700 text-bright text-base">Junior Back-End Web Developer</h3>
+                <p class="text-xs text-dim mt-0.5">PT Laskar Teknologi Mulia (CyberLabs) · Magang</p>
+              </div>
+              <span class="badge badge-muted flex-shrink-0">Okt 2020 – Des 2020</span>
+            </div>
+            <ul class="space-y-1.5">
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-muted rounded-full mt-1.5 flex-shrink-0"></span>Membuat blog 2 hari sekali dengan tema bebas</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-muted rounded-full mt-1.5 flex-shrink-0"></span>Membuat web dinamis bertema Hewan Tropis Dunia</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Education Tab -->
+    <div id="panel-edu" class="tab-panel hidden">
+      <div class="relative pl-8 border-l-2 border-border space-y-6 max-w-4xl mx-auto">
+
+        <!-- BSI -->
+        <div class="timeline-dot reveal">
+          <div class="bg-card border border-border rounded-xl p-6 hover:border-accent/40 transition-colors">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-700 text-bright text-base">Universitas Bina Sarana Informatika (BSI)</h3>
+                <p class="text-xs text-accent mt-0.5">Jurusan Sistem Informasi · Bogor</p>
+              </div>
+              <span class="badge badge-accent flex-shrink-0">2023 – Sekarang</span>
+            </div>
+            <ul class="space-y-1.5 mt-2">
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mengikuti Seminar dan Workshop teknologi</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- SMK Wikrama -->
+        <div class="timeline-dot reveal">
+          <div class="bg-card border border-border rounded-xl p-6 hover:border-teal/40 transition-colors">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-700 text-bright text-base">SMK Wikrama Bogor</h3>
+                <p class="text-xs text-teal mt-0.5">Jurusan Rekayasa Perangkat Lunak (RPL)</p>
+              </div>
+              <span class="badge badge-muted flex-shrink-0">2018 – 2021</span>
+            </div>
+            <ul class="space-y-1.5 mt-2">
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Mengikuti Latihan Dasar Kepemimpinan Siswa (LDKS)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- SMP -->
+        <div class="timeline-dot reveal">
+          <div class="bg-card border border-border rounded-xl p-6 hover:border-muted/40 transition-colors">
+            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+              <div>
+                <h3 class="font-display font-700 text-bright text-base">SMP Negeri 2 Ciawi</h3>
+                <p class="text-xs text-dim mt-0.5">Pendidikan Dasar</p>
+              </div>
+              <span class="badge badge-muted flex-shrink-0">2015 – 2018</span>
+            </div>
+            <ul class="space-y-1.5 mt-2">
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-muted rounded-full mt-1.5 flex-shrink-0"></span>Mengikuti Turnamen Basket</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .tab-btn.active { background: linear-gradient(135deg, #7c6af5, #5b4de0); color: white; }
+  .tab-panel.hidden { display: none; }
+</style>
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active');
+      b.style.background = '';
+      b.style.color = '';
+    });
+    document.getElementById('panel-' + tab).classList.remove('hidden');
+    const btn = document.getElementById('tab-' + tab);
+    btn.classList.add('active');
+  }
+</script>
+
+<!-- ═══════════════════ CONTACT ═══════════════════ -->
+<section id="contact" class="py-28 border-t border-border">
+  <div class="max-w-3xl mx-auto px-6 text-center">
+    <div class="reveal">
+      <!-- Top label -->
+      <div class="inline-flex items-center gap-2 mb-6">
+        <div class="w-6 h-px bg-accent"></div>
+        <span class="text-xs text-accent font-medium tracking-widest uppercase">Contact</span>
+        <div class="w-6 h-px bg-accent"></div>
+      </div>
+
+      <!-- CTA heading -->
+      <h2 class="font-display text-5xl font-800 text-bright mb-4 leading-tight">
+        Let's Work<br/><span class="gradient-text">Together</span>
+      </h2>
+      <p class="text-dim mb-3">Open for opportunities · Available for full-time & freelance</p>
+      <div class="inline-flex items-center gap-2 mb-12 px-4 py-2 rounded-full border border-teal/30 bg-teal/5">
+        <span class="w-2 h-2 rounded-full bg-teal animate-pulse-slow inline-block"></span>
+        <span class="text-xs text-teal font-medium">Currently available for new projects</span>
+      </div>
+
+      <!-- Contact cards -->
+      <div class="grid sm:grid-cols-3 gap-4 mb-10">
+        <a href="/cdn-cgi/l/email-protection#6801050905461b09040201280f05090104460b0705" class="group bg-card border border-border rounded-xl p-5 hover:border-accent/40 transition-all hover:-translate-y-1 text-left block">
+          <div class="w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-3">
+            <svg width="18" height="18" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div class="text-xs text-dim mb-1">Email</div>
+          <div class="text-sm text-text font-500 group-hover:text-accent-light transition-colors"><span class="__cf_email__" data-cfemail="b8d1d5d9d596cbd9d4d2d1f8dfd5d9d1d496dbd7d5">[email&#160;protected]</span></div>
+        </a>
+
+        <a href="https://github.com/imamsalji" target="_blank" class="group bg-card border border-border rounded-xl p-5 hover:border-teal/40 transition-all hover:-translate-y-1 text-left block">
+          <div class="w-10 h-10 rounded-lg bg-teal/10 border border-teal/20 flex items-center justify-center mb-3">
+            <svg width="18" height="18" fill="#3dd9c4" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </div>
+          <div class="text-xs text-dim mb-1">GitHub</div>
+          <div class="text-sm text-text font-500 group-hover:text-teal transition-colors">github.com/imamsalji</div>
+        </a>
+
+        <a href="https://linkedin.com/in/imamsalji" target="_blank" class="group bg-card border border-border rounded-xl p-5 hover:border-accent/40 transition-all hover:-translate-y-1 text-left block">
+          <div class="w-10 h-10 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center mb-3">
+            <svg width="18" height="18" fill="#a89ef8" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </div>
+          <div class="text-xs text-dim mb-1">LinkedIn</div>
+          <div class="text-sm text-text font-500 group-hover:text-accent-light transition-colors">linkedin.com/in/imamsalji</div>
+        </a>
+      </div>
+
+      <!-- Final CTA -->
+      <a href="/cdn-cgi/l/email-protection#8ee7e3efe3a0fdefe2e4e7cee9e3efe7e2a0ede1e3" class="btn-primary text-base px-8 py-4 inline-flex">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Say Hello →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="border-t border-border py-8">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="font-display font-800 text-bright">
+      MIS<span class="text-accent">.</span>
+    </div>
+    <div class="text-xs text-muted text-center">
+      Designed & built by <span class="text-dim">Mohamad Imam Salji</span> · 2024
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="https://github.com/imamsalji" target="_blank" class="text-muted hover:text-text transition-colors">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      </a>
+      <a href="https://linkedin.com/in/imamsalji" target="_blank" class="text-muted hover:text-text transition-colors">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.classList.add('visible');
+        // Trigger skill bars
+        el.target.querySelectorAll('.skill-fill[data-width]').forEach(bar => {
+          setTimeout(() => { bar.style.width = bar.dataset.width; }, 200);
+        });
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal, .reveal-left').forEach(el => observer.observe(el));
+
+  // Also trigger skill bars when skills section is visible
+  const skillsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        document.querySelectorAll('.skill-fill[data-width]').forEach((bar, i) => {
+          setTimeout(() => { bar.style.width = bar.dataset.width; }, 150 + i * 80);
+        });
+      }
+    });
+  }, { threshold: 0.2 });
+  const skillsSection = document.getElementById('skills');
+  if (skillsSection) skillsObserver.observe(skillsSection);
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+</script>
+
+</body>
+</html>
