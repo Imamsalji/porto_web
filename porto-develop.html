@@ -249,19 +249,98 @@
 <!-- ═══════════════════ NAV ═══════════════════ -->
 <nav class="fixed top-0 left-0 right-0 z-50 border-b border-border bg-ink/80">
   <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-    <a href="#" class="font-display font-800 text-bright text-lg tracking-tight">
+
+    <!-- Logo -->
+    <a href="#" class="font-display font-800 text-bright text-lg tracking-tight flex-shrink-0">
       MIS<span class="text-accent">.</span>
     </a>
+
+    <!-- Desktop Menu -->
     <div class="hidden md:flex items-center gap-8 text-sm text-dim font-body">
-      <a href="#about" class="hover:text-bright transition-colors">About</a>
-      <a href="#skills" class="hover:text-bright transition-colors">Skills</a>
-      <a href="#projects" class="hover:text-bright transition-colors">Projects</a>
-      <a href="#experience" class="hover:text-bright transition-colors">Experience</a>
-      <a href="#contact" class="hover:text-bright transition-colors">Contact</a>
+      <a href="#about" class="hover:text-bright transition-colors" data-i18n="nav.about">About</a>
+      <a href="#skills" class="hover:text-bright transition-colors" data-i18n="nav.skills">Skills</a>
+      <a href="#projects" class="hover:text-bright transition-colors" data-i18n="nav.projects">Projects</a>
+      <a href="#experience" class="hover:text-bright transition-colors" data-i18n="nav.experience">Experience</a>
+      <a href="#contact" class="hover:text-bright transition-colors" data-i18n="nav.contact">Contact</a>
     </div>
-    <a href="#contact" class="btn-primary text-sm py-2 px-5">Hire Me</a>
+
+    <!-- Right: Lang toggle + Hire Me + Hamburger -->
+    <div class="flex items-center gap-2">
+      <!-- Language Toggle -->
+      <button id="lang-toggle" onclick="toggleLang()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-xs font-medium text-dim hover:text-bright hover:border-muted transition-all" title="Switch Language">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        <span id="lang-label">EN</span>
+      </button>
+
+      <!-- Hire Me (desktop only) -->
+      <a href="#contact" class="hidden md:inline-flex btn-primary text-sm py-2 px-5" data-i18n="nav.hire">Hire Me</a>
+
+      <!-- Hamburger (mobile only) -->
+      <button id="hamburger" onclick="toggleMobileMenu()" class="md:hidden flex flex-col justify-center items-center w-9 h-9 rounded-lg border border-border hover:border-muted transition-all gap-1.5 flex-shrink-0" aria-label="Toggle menu">
+        <span id="ham-line1" class="block w-5 h-0.5 bg-dim rounded-full transition-all duration-300"></span>
+        <span id="ham-line2" class="block w-5 h-0.5 bg-dim rounded-full transition-all duration-300"></span>
+        <span id="ham-line3" class="block w-5 h-0.5 bg-dim rounded-full transition-all duration-300"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Dropdown -->
+  <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-in-out" style="max-height:0; opacity:0;">
+    <div class="px-6 pb-5 pt-2 flex flex-col gap-1 border-t border-border bg-ink/95 backdrop-blur-xl">
+      <a href="#about" onclick="closeMobileMenu()" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-dim hover:text-bright hover:bg-surface transition-all" data-i18n="nav.about">About</a>
+      <a href="#skills" onclick="closeMobileMenu()" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-dim hover:text-bright hover:bg-surface transition-all" data-i18n="nav.skills">Skills</a>
+      <a href="#projects" onclick="closeMobileMenu()" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-dim hover:text-bright hover:bg-surface transition-all" data-i18n="nav.projects">Projects</a>
+      <a href="#experience" onclick="closeMobileMenu()" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-dim hover:text-bright hover:bg-surface transition-all" data-i18n="nav.experience">Experience</a>
+      <a href="#contact" onclick="closeMobileMenu()" class="mobile-nav-link flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-dim hover:text-bright hover:bg-surface transition-all" data-i18n="nav.contact">Contact</a>
+      <div class="mt-2 pt-3 border-t border-border">
+        <a href="#contact" onclick="closeMobileMenu()" class="btn-primary w-full justify-center" data-i18n="nav.hire">Hire Me</a>
+      </div>
+    </div>
   </div>
 </nav>
+
+<script>
+  let mobileMenuOpen = false;
+
+  function toggleMobileMenu() {
+    mobileMenuOpen = !mobileMenuOpen;
+    const menu = document.getElementById('mobile-menu');
+    const l1 = document.getElementById('ham-line1');
+    const l2 = document.getElementById('ham-line2');
+    const l3 = document.getElementById('ham-line3');
+
+    if (mobileMenuOpen) {
+      menu.style.maxHeight = menu.scrollHeight + 'px';
+      menu.style.opacity = '1';
+      // Animate to X
+      l1.style.transform = 'translateY(8px) rotate(45deg)';
+      l2.style.opacity = '0';
+      l3.style.transform = 'translateY(-8px) rotate(-45deg)';
+    } else {
+      menu.style.maxHeight = '0';
+      menu.style.opacity = '0';
+      l1.style.transform = '';
+      l2.style.opacity = '1';
+      l3.style.transform = '';
+    }
+  }
+
+  function closeMobileMenu() {
+    if (!mobileMenuOpen) return;
+    mobileMenuOpen = false;
+    const menu = document.getElementById('mobile-menu');
+    menu.style.maxHeight = '0';
+    menu.style.opacity = '0';
+    document.getElementById('ham-line1').style.transform = '';
+    document.getElementById('ham-line2').style.opacity = '1';
+    document.getElementById('ham-line3').style.transform = '';
+  }
+
+  // Close menu on resize to desktop
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) closeMobileMenu();
+  });
+</script>
 
 <!-- ═══════════════════ HERO ═══════════════════ -->
 <section id="home" class="relative min-h-screen flex items-center pt-16 overflow-hidden">
@@ -277,7 +356,7 @@
       <!-- Status badge -->
       <div class="hero-anim delay-0 inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full border border-accent/30 bg-accent/5">
         <span class="w-2 h-2 rounded-full bg-teal animate-pulse-slow inline-block"></span>
-        <span class="text-xs font-body text-teal font-medium tracking-wider uppercase">Open for Opportunities</span>
+        <span class="text-xs font-body text-teal font-medium tracking-wider uppercase" data-i18n="hero.badge">Open for Opportunities</span>
       </div>
 
       <h1 class="hero-anim delay-1 font-display font-800 leading-[1.1] mb-5" style="font-size:3.5rem; font-weight:800;">
@@ -286,16 +365,16 @@
       </h1>
 
       <p class="hero-anim delay-2 text-lg text-dim font-body font-300 mb-3 leading-relaxed">
-        Fullstack Developer with <span class="text-accent-light font-500">3+ years experience</span> in Backend Development
+        <span data-i18n="hero.tagline1">Fullstack Developer with</span> <span class="text-accent-light font-500" data-i18n="hero.tagline2">3+ years experience</span> <span data-i18n="hero.tagline3">in Backend Development</span>
       </p>
       <p class="hero-anim delay-3 text-sm text-dim font-body leading-relaxed mb-10 max-w-2xl">
-        Spesialis <span class="text-text">Laravel &amp; CodeIgniter</span>, berpengalaman membangun REST API dan aplikasi web scalable menggunakan React, dan Tailwind CSS.
+        <span data-i18n="hero.sub1">Spesialis</span> <span class="text-text">Laravel &amp; CodeIgniter</span>, <span data-i18n="hero.sub2">berpengalaman membangun REST API dan aplikasi web scalable menggunakan React, dan Tailwind CSS.</span>
       </p>
 
       <div class="hero-anim delay-4 flex flex-wrap justify-center gap-3 mb-12">
         <a href="#projects" class="btn-primary">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-          Lihat Project
+          <span data-i18n="hero.cta1">Lihat Project</span>
         </a>
         <a target="_blank" href="https://drive.google.com/file/d/1pI7gVpZ3WGNterBVttB3l51h54NWaBhO/view?usp=sharing" class="btn-secondary">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -322,19 +401,19 @@
               <!-- Stat cards -->
               <div class="bg-surface border border-border rounded-xl p-5">
                 <div class="text-3xl font-display font-800 gradient-text mb-1">3+</div>
-                <div class="text-xs text-dim">Years Backend Dev</div>
+                <div class="text-xs text-dim" data-i18n="about.stat1">Years Backend Dev</div>
               </div>
               <div class="bg-surface border border-border rounded-xl p-5">
                 <div class="text-3xl font-display font-800 text-teal mb-1">10+</div>
-                <div class="text-xs text-dim">Projects Delivered</div>
+                <div class="text-xs text-dim" data-i18n="about.stat2">Projects Delivered</div>
               </div>
               <div class="bg-surface border border-border rounded-xl p-5">
                 <div class="text-3xl font-display font-800 gradient-text mb-1">5+</div>
-                <div class="text-xs text-dim">Tech Stacks</div>
+                <div class="text-xs text-dim" data-i18n="about.stat3">Tech Stacks</div>
               </div>
               <div class="bg-surface border border-border rounded-xl p-5">
                 <div class="text-3xl font-display font-800 text-teal mb-1">∞</div>
-                <div class="text-xs text-dim">Coffee Consumed</div>
+                <div class="text-xs text-dim" data-i18n="about.stat4">Coffee Consumed</div>
               </div>
             </div>
             <!-- Tags -->
@@ -354,20 +433,20 @@
       <div class="reveal">
         <div class="inline-flex items-center gap-2 mb-4">
           <div class="w-6 h-px bg-accent"></div>
-          <span class="text-xs text-accent font-medium tracking-widest uppercase">About Me</span>
+          <span class="text-xs text-accent font-medium tracking-widest uppercase" data-i18n="about.label">About Me</span>
         </div>
         <h2 class="font-display text-4xl font-800 text-bright mb-6 leading-tight">
-          Passionate about building<br/><span class="gradient-text">scalable systems</span>
+          <span data-i18n="about.title1">Passionate about building</span><br/><span class="gradient-text" data-i18n="about.title2">scalable systems</span>
         </h2>
         <p class="text-text font-body leading-relaxed mb-4">
-          Saya adalah Fullstack Developer dengan pengalaman <strong class="text-bright">3 tahun sebagai Backend Developer</strong> menggunakan Laravel dan CodeIgniter. Saya terbiasa membangun REST API yang handal, mengelola database relasional, dan mengembangkan sistem yang efisien dan scalable.
+          <span data-i18n="about.p1">Saya adalah Fullstack Developer dengan pengalaman <strong class="text-bright">3 tahun sebagai Backend Developer</strong> menggunakan Laravel dan CodeIgniter. Saya terbiasa membangun REST API yang handal, mengelola database relasional, dan mengembangkan sistem yang efisien dan scalable.</span>
         </p>
         <p class="text-dim font-body leading-relaxed mb-8">
-          Selain backend, saya juga memiliki pengalaman solid di sisi frontend menggunakan <span class="text-text">React, JavaScript, jQuery, dan Tailwind CSS</span> — memungkinkan saya berkolaborasi efektif di seluruh stack dan memahami kebutuhan end-to-end sebuah aplikasi web.
+          <span data-i18n="about.p2">Selain backend, saya juga memiliki pengalaman solid di sisi frontend menggunakan <span class="text-text">React, JavaScript, jQuery, dan Tailwind CSS</span> — memungkinkan saya berkolaborasi efektif di seluruh stack dan memahami kebutuhan end-to-end sebuah aplikasi web.</span>
         </p>
         <div class="flex flex-wrap gap-3">
-          <a href="#projects" class="btn-primary">View Projects</a>
-          <a href="#contact" class="btn-secondary">Get In Touch</a>
+          <a href="#projects" class="btn-primary" data-i18n="about.btn1">View Projects</a>
+          <a href="#contact" class="btn-secondary" data-i18n="about.btn2">Get In Touch</a>
         </div>
       </div>
 
@@ -397,7 +476,7 @@
           </div>
           <div>
             <div class="font-display font-700 text-bright text-sm">Backend</div>
-            <div class="text-xs text-dim">Core Expertise</div>
+            <div class="text-xs text-dim" data-i18n="skills.be_sub">Core Expertise</div>
           </div>
         </div>
         <div class="space-y-4">
@@ -436,7 +515,7 @@
           </div>
           <div>
             <div class="font-display font-700 text-bright text-sm">Frontend</div>
-            <div class="text-xs text-dim">Supporting Skills</div>
+            <div class="text-xs text-dim" data-i18n="skills.fe_sub">Supporting Skills</div>
           </div>
         </div>
         <div class="space-y-4">
@@ -487,7 +566,7 @@
           </div>
           <div>
             <div class="font-display font-700 text-bright text-sm">Database</div>
-            <div class="text-xs text-dim">Data Management</div>
+            <div class="text-xs text-dim" data-i18n="skills.db_sub">Data Management</div>
           </div>
         </div>
         <div class="space-y-4">
@@ -498,7 +577,7 @@
             </div>
           </div>
           <div class="mt-6">
-            <div class="text-xs text-dim mb-3">Expertise</div>
+            <div class="text-xs text-dim mb-3" data-i18n="skills.expertise_label">Expertise</div>
             <div class="flex flex-wrap gap-2">
               <span class="badge badge-muted">SQL Query</span>
               <span class="badge badge-muted">Relations</span>
@@ -518,7 +597,7 @@
           </div>
           <div>
             <div class="font-display font-700 text-bright text-sm">Tools & DevOps</div>
-            <div class="text-xs text-dim">Workflow</div>
+            <div class="text-xs text-dim" data-i18n="skills.tools_sub">Workflow</div>
           </div>
         </div>
         <div class="space-y-3">
@@ -561,8 +640,8 @@
     <!-- Tabs -->
     <div class="flex justify-center mb-8 reveal">
       <div class="inline-flex bg-card border border-border rounded-xl p-1 gap-1">
-        <button onclick="switchPortfolioTab('projects')" id="ptab-projects" class="ptab-btn px-5 py-2 rounded-lg text-sm font-medium transition-all" style="background:linear-gradient(135deg,#7c6af5,#5b4de0);color:white;">Projects</button>
-        <button onclick="switchPortfolioTab('certs')" id="ptab-certs" class="ptab-btn px-5 py-2 rounded-lg text-sm font-medium transition-all text-dim hover:text-text">Sertifikat</button>
+        <button onclick="switchPortfolioTab('projects')" id="ptab-projects" class="ptab-btn px-5 py-2 rounded-lg text-sm font-medium transition-all" style="background:linear-gradient(135deg,#7c6af5,#5b4de0);color:white;"><span data-i18n="projects.tab_proj">Projects</span></button>
+        <button onclick="switchPortfolioTab('certs')" id="ptab-certs" class="ptab-btn px-5 py-2 rounded-lg text-sm font-medium transition-all text-dim hover:text-text"><span data-i18n="projects.tab_cert">Sertifikat</span></button>
       </div>
     </div>
 
@@ -580,7 +659,7 @@
               <span class="badge badge-teal text-[10px]">Production</span>
             </div>
             <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-accent-light transition-colors">CETO LMS</h3>
-            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Aplikasi yang dibuat untuk memudahkan proses belajar mengajar .</p>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2" data-i18n="proj.p1_desc">Aplikasi yang dibuat untuk memudahkan proses belajar mengajar.</p>
             <div class="flex flex-wrap gap-1 mb-4">
               <span class="badge badge-accent text-[10px]">Laravel</span>
               <span class="badge badge-accent text-[10px]">MySQL</span>
@@ -599,7 +678,7 @@
               <span class="badge badge-teal text-[10px]">Development</span>
             </div>
             <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-accent-light transition-colors">MosherBlox</h3>
-            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Web Jual Beli Robux/Roblox Mudah dan terjangkau digunakan oleh segala kalangan usia</p>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2" data-i18n="proj.p2_desc">Web Jual Beli Robux/Roblox Mudah dan terjangkau digunakan oleh segala kalangan usia</p>
             <div class="flex flex-wrap gap-1 mb-4">
               <span class="badge badge-accent text-[10px]">Laravel</span>
               <span class="badge badge-teal text-[10px]">React</span>
@@ -619,7 +698,7 @@
               <span class="badge badge-accent text-[10px]">Production</span>
             </div>
             <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">Danamart SCF</h3>
-            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Danamart adalah platform aplikasi urun dana (securities crowdfunding) Indonesia untuk investasi keuangan atau dana pembiayaan dengan mudah, cepat, dan aman.</p>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2" data-i18n="proj.p3_desc">Danamart adalah platform aplikasi urun dana (securities crowdfunding) Indonesia untuk investasi keuangan atau dana pembiayaan dengan mudah, cepat, dan aman.</p>
             <div class="flex flex-wrap gap-1 mb-4">
               <span class="badge badge-accent text-[10px]">Laravel</span>
               <span class="badge badge-teal text-[10px]">CodeIgniter</span>
@@ -640,7 +719,7 @@
               <span class="badge badge-teal text-[10px]">Production</span>
             </div>
             <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-accent-light transition-colors">KPRTNI</h3>
-            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">ETWPAD adalah aplikasi produktivitas yang dirancang khusus untuk prajurit TNI AD</p>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2" data-i18n="proj.p4_desc">ETWPAD adalah aplikasi produktivitas yang dirancang khusus untuk prajurit TNI AD</p>
             <div class="flex flex-wrap gap-1 mb-4">
               <span class="badge badge-teal text-[10px]">Laravel</span>
               <span class="badge badge-muted text-[10px]">MySQL</span>
@@ -661,7 +740,7 @@
               <span class="badge badge-teal text-[10px]">SaaS</span>
             </div>
             <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-teal transition-colors">Akunting KPR</h3>
-            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Platform akademik komprehensif untuk absensi, nilai, dan komunikasi orang tua-sekolah.</p>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2" data-i18n="proj.p5_desc">Platform akademik komprehensif untuk absensi, nilai, dan komunikasi orang tua-sekolah.</p>
             <div class="flex flex-wrap gap-1 mb-4">
               <span class="badge badge-accent text-[10px]">Laravel</span>
               <span class="badge badge-muted text-[10px]">jQuery</span>
@@ -682,7 +761,7 @@
               <span class="badge badge-accent text-[10px]">chatBot</span>
             </div>
             <h3 class="font-display font-700 text-bright text-sm mb-1 group-hover:text-accent-light transition-colors">Chatbot Coreo</h3>
-            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2">Chatbot WhatsApp terintegrasi Dialogflow, deploy di server dengan monitoring aktif.</p>
+            <p class="text-dim text-xs leading-relaxed mb-3 line-clamp-2" data-i18n="proj.p6_desc">Chatbot WhatsApp terintegrasi Dialogflow, deploy di server dengan monitoring aktif.</p>
             <div class="flex flex-wrap gap-1 mb-4">
               <span class="badge badge-accent text-[10px]">Dialogflow</span>
               <span class="badge badge-teal text-[10px]">Laravel</span>
@@ -1025,21 +1104,21 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
     <div class="text-center mb-12 reveal">
       <div class="inline-flex items-center gap-2 mb-4">
         <div class="w-6 h-px bg-accent"></div>
-        <span class="text-xs text-accent font-medium tracking-widest uppercase">Journey</span>
+        <span class="text-xs text-accent font-medium tracking-widest uppercase" data-i18n="exp.label">Journey</span>
         <div class="w-6 h-px bg-accent"></div>
       </div>
-      <h2 class="font-display text-4xl font-800 text-bright mb-3">Experience & Education</h2>
-      <p class="text-dim text-sm max-w-lg mx-auto">Perjalanan karir dari internship hingga menjadi full-stack developer dengan pengalaman di perusahaan fintech dan startup.</p>
+      <h2 class="font-display text-4xl font-800 text-bright mb-3" data-i18n="exp.title">Experience & Education</h2>
+      <p class="text-dim text-sm max-w-lg mx-auto" data-i18n="exp.subtitle">Perjalanan karir dari internship hingga menjadi full-stack developer dengan pengalaman di perusahaan fintech dan startup.</p>
     </div>
 
     <!-- Tabs -->
     <div class="flex justify-center mb-10 reveal">
       <div class="inline-flex bg-card border border-border rounded-xl p-1 gap-1">
         <button onclick="switchTab('work')" id="tab-work" class="tab-btn active px-5 py-2 rounded-lg text-sm font-medium transition-all bg-accent text-white">
-          Work Experience
+          <span data-i18n="exp.tab_work">Work Experience</span>
         </button>
         <button onclick="switchTab('edu')" id="tab-edu" class="tab-btn px-5 py-2 rounded-lg text-sm font-medium transition-all text-dim hover:text-text">
-          Education
+          <span data-i18n="exp.tab_edu">Education</span>
         </button>
       </div>
     </div>
@@ -1053,16 +1132,16 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
           <div class="bg-card border border-border rounded-xl p-6 hover:border-accent/40 transition-colors">
             <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
               <div>
-                <h3 class="font-display font-700 text-bright text-base">Freelance & Skill Development</h3>
-                <p class="text-xs text-accent mt-0.5">Full-Stack Developer · Remote</p>
+                <h3 class="font-display font-700 text-bright text-base" data-i18n="exp.work1_title">Freelance & Skill Development</h3>
+                <p class="text-xs text-accent mt-0.5" data-i18n="exp.work1_sub">Full-Stack Developer · Remote</p>
               </div>
-              <span class="badge badge-teal flex-shrink-0">Okt 2024 – Sekarang</span>
+              <span class="badge badge-teal flex-shrink-0" data-i18n="exp.work1_period">Okt 2024 – Sekarang</span>
             </div>
             <ul class="space-y-1.5 mt-3">
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mengambil project sampingan pembuatan aplikasi web</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mempelajari best practice API security dan authentication</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mengikuti kursus dan latihan pengembangan skill frontend–backend</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mengembangkan aplikasi menggunakan React TypeScript & Laravel</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work1_li1">Mengambil project sampingan pembuatan aplikasi web</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work1_li2">Mempelajari best practice API security dan authentication</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work1_li3">Mengikuti kursus dan latihan pengembangan skill frontend–backend</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work1_li4">Mengembangkan aplikasi menggunakan React TypeScript & Laravel</span></li>
             </ul>
             <div class="flex flex-wrap gap-2 mt-4">
               <span class="badge badge-accent">Laravel</span>
@@ -1083,11 +1162,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
               <span class="badge badge-muted flex-shrink-0">Mar 2024 – Jun 2024</span>
             </div>
             <ul class="space-y-1.5 mt-3">
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Menentukan tujuan chatbot, alur percakapan, dan platform yang digunakan (WhatsApp)</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat chatbot menggunakan Dialogflow, Rasa, atau GPT API</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Menghubungkan chatbot dengan sistem pihak ketiga (Watzap)</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Menjalankan chatbot di server serta melakukan update dan pemantauan agar tetap optimal</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Menyusun panduan teknis dan memberikan pelatihan bagi pengguna</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work2_li1">Menentukan tujuan chatbot, alur percakapan, dan platform yang digunakan (WhatsApp)</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work2_li2">Membuat chatbot menggunakan Dialogflow, Rasa, atau GPT API</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work2_li3">Menghubungkan chatbot dengan sistem pihak ketiga (Watzap)</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work2_li4">Menjalankan chatbot di server serta melakukan update dan pemantauan agar tetap optimal</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work2_li5">Menyusun panduan teknis dan memberikan pelatihan bagi pengguna</span></li>
             </ul>
             <div class="flex flex-wrap gap-2 mt-4">
               <span class="badge badge-teal">Dialogflow</span>
@@ -1107,8 +1186,8 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
                 <p class="text-xs text-accent mt-0.5">Danamart · Fintech</p>
               </div>
               <div class="flex flex-col items-end gap-1">
-                <span class="badge badge-accent">Okt 2021 – Sep 2024</span>
-                <span class="text-xs text-teal font-medium">~3 Tahun</span>
+                <span class="badge badge-accent" data-i18n="exp.work3_period">Okt 2021 – Sep 2024</span>
+                <span class="text-xs text-teal font-medium" data-i18n="exp.work3_duration">~3 Tahun</span>
               </div>
             </div>
             <div class="p-6">
@@ -1122,13 +1201,13 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
                     <span class="text-xs font-600 text-accent-light">Back-End</span>
                   </div>
                   <ul class="space-y-1.5">
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Membuat dan mengelola logika bisnis aplikasi</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mengimplementasikan algoritma fungsi utama aplikasi</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Merancang dan mengelola database relasional</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Membuat API beserta dokumentasinya</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Integrasi layanan pihak ketiga (payment, email, media sosial)</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Memastikan API aman, cepat, dan mudah diintegrasikan</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Memantau kinerja dan menangani downtime / bug</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_be1">Membuat dan mengelola logika bisnis aplikasi</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_be2">Mengimplementasikan algoritma fungsi utama aplikasi</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_be3">Merancang dan mengelola database relasional</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_be4">Membuat API beserta dokumentasinya</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_be5">Integrasi layanan pihak ketiga (payment, email, media sosial)</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_be6">Memastikan API aman, cepat, dan mudah diintegrasikan</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_be7">Memantau kinerja dan menangani downtime / bug</span></li>
                   </ul>
                 </div>
                 <!-- Frontend role -->
@@ -1140,12 +1219,12 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
                     <span class="text-xs font-600 text-teal">Web Developer</span>
                   </div>
                   <ul class="space-y-1.5">
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat tampilan UI menggunakan HTML, CSS, JavaScript</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Mengintegrasikan elemen visual sesuai kebutuhan desain</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Mengidentifikasi dan memperbaiki bug</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Mengoptimalkan kecepatan dan performa situs web</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Menerapkan praktik keamanan terbaik</li>
-                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat dokumentasi kode dan proyek</li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_fe1">Membuat tampilan UI menggunakan HTML, CSS, JavaScript</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_fe2">Mengintegrasikan elemen visual sesuai kebutuhan desain</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_fe3">Mengidentifikasi dan memperbaiki bug</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_fe4">Mengoptimalkan kecepatan dan performa situs web</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_fe5">Menerapkan praktik keamanan terbaik</span></li>
+                    <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work3_fe6">Membuat dokumentasi kode dan proyek</span></li>
                   </ul>
                 </div>
               </div>
@@ -1169,13 +1248,13 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
                 <h3 class="font-display font-700 text-bright text-base">Web Developer</h3>
                 <p class="text-xs text-teal mt-0.5">PT Kreasi Asia · Freelance Remote</p>
               </div>
-              <span class="badge badge-muted flex-shrink-0">Mei 2021 – Agt 2021</span>
+              <span class="badge badge-muted flex-shrink-0" data-i18n="exp.work4_period">Mei 2021 – Agt 2021</span>
             </div>
-            <p class="text-xs text-dim mb-3">Pembuatan Aplikasi Accounting Berbasis Web</p>
+            <p class="text-xs text-dim mb-3" data-i18n="exp.work4_desc">Pembuatan Aplikasi Accounting Berbasis Web</p>
             <ul class="space-y-1.5">
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat CRUD Form Repeater Kas & Bank</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat Filter untuk Buku Besar</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Membuat laporan dan dokumentasi Pengguna</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work4_li1">Membuat CRUD Form Repeater Kas & Bank</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work4_li2">Membuat Filter untuk Buku Besar</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work4_li3">Membuat laporan dan dokumentasi Pengguna</span></li>
             </ul>
             <div class="flex flex-wrap gap-2 mt-4">
               <span class="badge badge-accent">Laravel</span>
@@ -1194,11 +1273,11 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
               </div>
               <span class="badge badge-muted flex-shrink-0">Mar 2021 – Apr 2021</span>
             </div>
-            <p class="text-xs text-dim mb-3">Pembuatan Aplikasi Berbasis Web</p>
+            <p class="text-xs text-dim mb-3" data-i18n="exp.work5b_desc">Pembuatan Aplikasi Berbasis Web</p>
             <ul class="space-y-1.5">
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Membuat CRUD dan menampilkan data yang difilter sesuai kebutuhan client</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Membuat query di Laravel untuk menampilkan laporan & Query Trigger</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Merancang, membuat, dan mengelola database relasional</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work5b_li1">Membuat CRUD dan menampilkan data yang difilter sesuai kebutuhan client</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work5b_li2">Membuat query di Laravel untuk menampilkan laporan & Query Trigger</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work5b_li3">Merancang, membuat, dan mengelola database relasional</span></li>
             </ul>
             <div class="flex flex-wrap gap-2 mt-4">
               <span class="badge badge-accent">Laravel</span>
@@ -1213,13 +1292,13 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
             <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
               <div>
                 <h3 class="font-display font-700 text-bright text-base">Junior Back-End Web Developer</h3>
-                <p class="text-xs text-dim mt-0.5">PT Laskar Teknologi Mulia (CyberLabs) · Magang</p>
+                <p class="text-xs text-dim mt-0.5" data-i18n="exp.work5_sub">PT Laskar Teknologi Mulia (CyberLabs) · Magang</p>
               </div>
-              <span class="badge badge-muted flex-shrink-0">Okt 2020 – Des 2020</span>
+              <span class="badge badge-muted flex-shrink-0" data-i18n="exp.work5_period">Okt 2020 – Des 2020</span>
             </div>
             <ul class="space-y-1.5">
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-muted rounded-full mt-1.5 flex-shrink-0"></span>Membuat blog 2 hari sekali dengan tema bebas</li>
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-muted rounded-full mt-1.5 flex-shrink-0"></span>Membuat web dinamis bertema Hewan Tropis Dunia</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-muted rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work6_li1">Membuat blog 2 hari sekali dengan tema bebas</span></li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-muted rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="exp.work6_li2">Membuat web dinamis bertema Hewan Tropis Dunia</span></li>
             </ul>
           </div>
         </div>
@@ -1237,12 +1316,12 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
             <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
               <div>
                 <h3 class="font-display font-700 text-bright text-base">Universitas Bina Sarana Informatika (BSI)</h3>
-                <p class="text-xs text-accent mt-0.5">Jurusan Sistem Informasi · Bogor</p>
+                <p class="text-xs text-accent mt-0.5" data-i18n="edu.bsi_sub">Jurusan Sistem Informasi · Bogor</p>
               </div>
-              <span class="badge badge-accent flex-shrink-0">2023 – Sekarang</span>
+              <span class="badge badge-accent flex-shrink-0" data-i18n="edu.bsi_period">2023 – Sekarang</span>
             </div>
             <ul class="space-y-1.5 mt-2">
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span>Mengikuti Seminar dan Workshop teknologi</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-accent rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="edu.bsi_li1">Mengikuti Seminar dan Workshop teknologi</span></li>
             </ul>
           </div>
         </div>
@@ -1253,12 +1332,12 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
             <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
               <div>
                 <h3 class="font-display font-700 text-bright text-base">SMK Wikrama Bogor</h3>
-                <p class="text-xs text-teal mt-0.5">Jurusan Rekayasa Perangkat Lunak (RPL)</p>
+                <p class="text-xs text-teal mt-0.5" data-i18n="edu.smk_sub">Jurusan Rekayasa Perangkat Lunak (RPL)</p>
               </div>
               <span class="badge badge-muted flex-shrink-0">2018 – 2021</span>
             </div>
             <ul class="space-y-1.5 mt-2">
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span>Mengikuti Latihan Dasar Kepemimpinan Siswa (LDKS)</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-teal rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="edu.smk_li1">Mengikuti Latihan Dasar Kepemimpinan Siswa (LDKS)</span></li>
             </ul>
           </div>
         </div>
@@ -1269,12 +1348,12 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
             <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
               <div>
                 <h3 class="font-display font-700 text-bright text-base">SMP Negeri 2 Ciawi</h3>
-                <p class="text-xs text-dim mt-0.5">Pendidikan Dasar</p>
+                <p class="text-xs text-dim mt-0.5" data-i18n="edu.smp_sub">Pendidikan Dasar</p>
               </div>
               <span class="badge badge-muted flex-shrink-0">2015 – 2018</span>
             </div>
             <ul class="space-y-1.5 mt-2">
-              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-muted rounded-full mt-1.5 flex-shrink-0"></span>Mengikuti Turnamen Basket</li>
+              <li class="flex items-start gap-2 text-xs text-dim"><span class="w-1 h-1 bg-muted rounded-full mt-1.5 flex-shrink-0"></span><span data-i18n="edu.smp_li1">Mengikuti Turnamen Basket</span></li>
             </ul>
           </div>
         </div>
@@ -1310,18 +1389,18 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
       <!-- Top label -->
       <div class="inline-flex items-center gap-2 mb-6">
         <div class="w-6 h-px bg-accent"></div>
-        <span class="text-xs text-accent font-medium tracking-widest uppercase">Contact</span>
+        <span class="text-xs text-accent font-medium tracking-widest uppercase" data-i18n="contact.label">Contact</span>
         <div class="w-6 h-px bg-accent"></div>
       </div>
 
       <!-- CTA heading -->
       <h2 class="font-display text-5xl font-800 text-bright mb-4 leading-tight">
-        Let's Work<br/><span class="gradient-text">Together</span>
+        <span data-i18n="contact.title1">Let's Work</span><br/><span class="gradient-text" data-i18n="contact.title2">Together</span>
       </h2>
       <p class="text-dim mb-3">Open for opportunities · Available for full-time & freelance</p>
       <div class="inline-flex items-center gap-2 mb-12 px-4 py-2 rounded-full border border-teal/30 bg-teal/5">
         <span class="w-2 h-2 rounded-full bg-teal animate-pulse-slow inline-block"></span>
-        <span class="text-xs text-teal font-medium">Currently available for new projects</span>
+        <span class="text-xs text-teal font-medium" data-i18n="contact.available">Currently available for new projects</span>
       </div>
 
       <!-- Contact cards -->
@@ -1331,7 +1410,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
             <svg width="18" height="18" fill="none" stroke="#a89ef8" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
           </div>
           <div class="text-xs text-dim mb-1">Email</div>
-          <div class="text-sm text-text font-500 group-hover:text-accent-light transition-colors"><span class="__cf_email__" data-cfemail="b8d1d5d9d596cbd9d4d2d1f8dfd5d9d1d496dbd7d5">imamsalji7@gmail.com</span></div>
+          <div class="text-sm text-text font-500 group-hover:text-accent-light transition-colors"><span class="__cf_email__" data-cfemail="b8d1d5d9d596cbd9d4d2d1f8dfd5d9d1d496dbd7d5"><span class="__cf_email__" data-cfemail="ea83878b87998b868083ddaa8d878b8386c4898587">imamsalji7@gmail.com</span></span></div>
         </a>
 
         <a href="https://github.com/imamsalji" target="_blank" class="group bg-card border border-border rounded-xl p-5 hover:border-teal/40 transition-all hover:-translate-y-1 text-left block">
@@ -1375,7 +1454,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 </footer>
 
 <!-- ═══════════════════ SCRIPTS ═══════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(el => {
@@ -1407,14 +1486,323 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
   // Smooth scroll for nav links
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
+      e.preventDefault();
       const target = document.querySelector(a.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
   });
+</script>
 
+<script>
+// ══════════════════ TRANSLATION SYSTEM ══════════════════
+const translations = {
+  id: {
+    // NAV
+    'nav.about': 'Tentang',
+    'nav.skills': 'Keahlian',
+    'nav.projects': 'Proyek',
+    'nav.experience': 'Pengalaman',
+    'nav.contact': 'Kontak',
+    'nav.hire': 'Rekrut Saya',
+    // HERO
+    'hero.badge': 'Terbuka untuk Peluang Baru',
+    'hero.tagline1': 'Fullstack Developer dengan',
+    'hero.tagline2': 'pengalaman 3+ tahun',
+    'hero.tagline3': 'di Backend Development',
+    'hero.sub1': 'Spesialis',
+    'hero.sub2': 'berpengalaman membangun REST API dan aplikasi web scalable menggunakan React, dan Tailwind CSS.',
+    'hero.cta1': 'Lihat Proyek',
+    // ABOUT
+    'about.label': 'Tentang Saya',
+    'about.title1': 'Bersemangat membangun',
+    'about.title2': 'sistem yang skalabel',
+    'about.p1': 'Saya adalah Fullstack Developer dengan pengalaman <strong class="text-bright">3 tahun sebagai Backend Developer</strong> menggunakan Laravel dan CodeIgniter. Saya terbiasa membangun REST API yang handal, mengelola database relasional, dan mengembangkan sistem yang efisien dan scalable.',
+    'about.p2': 'Selain backend, saya juga memiliki pengalaman solid di sisi frontend menggunakan <span class="text-text">React, JavaScript, jQuery, dan Tailwind CSS</span> — memungkinkan saya berkolaborasi efektif di seluruh stack dan memahami kebutuhan end-to-end sebuah aplikasi web.',
+    'about.btn1': 'Lihat Proyek',
+    'about.btn2': 'Hubungi Saya',
+    'about.stat1': 'Tahun Dev Backend',
+    'about.stat2': 'Proyek Selesai',
+    'about.stat3': 'Tech Stack',
+    'about.stat4': 'Kopi Terkonsumsi',
+    // SKILLS
+    'skills.title': 'Keahlian & Kompetensi',
+    'skills.be_sub': 'Keahlian Utama',
+    'skills.fe_sub': 'Keahlian Pendukung',
+    'skills.db_sub': 'Manajemen Data',
+    'skills.tools_sub': 'Alur Kerja',
+    'skills.expertise_label': 'Kompetensi',
+    // PROJECTS
+    'projects.label': 'Karya & Pencapaian',
+    'projects.title': 'Proyek & Sertifikat',
+    'projects.tab_proj': 'Proyek',
+    'projects.tab_cert': 'Sertifikat',
+    'proj.p1_desc': 'Aplikasi yang dibuat untuk memudahkan proses belajar mengajar.',
+    'proj.p2_desc': 'Web Jual Beli Robux/Roblox mudah dan terjangkau untuk segala kalangan usia.',
+    'proj.p3_desc': 'Platform urun dana (securities crowdfunding) Indonesia untuk investasi yang mudah, cepat, dan aman.',
+    'proj.p4_desc': 'Aplikasi produktivitas yang dirancang khusus untuk prajurit TNI AD.',
+    'proj.p5_desc': 'Platform akuntansi KPR komprehensif untuk manajemen angsuran dan laporan keuangan.',
+    'proj.p6_desc': 'Chatbot WhatsApp terintegrasi Dialogflow, deploy di server dengan monitoring aktif.',
+    // EXPERIENCE
+    'exp.label': 'Perjalanan',
+    'exp.title': 'Pengalaman & Pendidikan',
+    'exp.subtitle': 'Perjalanan karir dari internship hingga menjadi full-stack developer dengan pengalaman di perusahaan fintech dan startup.',
+    'exp.tab_work': 'Pengalaman Kerja',
+    'exp.tab_edu': 'Pendidikan',
+    'exp.work1_title': 'Freelance & Pengembangan Skill',
+    'exp.work1_sub': 'Full-Stack Developer · Remote',
+    'exp.work1_period': 'Okt 2024 – Sekarang',
+    'exp.work1_li1': 'Mengambil project sampingan pembuatan aplikasi web',
+    'exp.work1_li2': 'Mempelajari best practice API security dan authentication',
+    'exp.work1_li3': 'Mengikuti kursus dan latihan pengembangan skill frontend–backend',
+    'exp.work1_li4': 'Mengembangkan aplikasi menggunakan React TypeScript & Laravel',
+    'exp.work2_li1': 'Menentukan tujuan chatbot, alur percakapan, dan platform yang digunakan (WhatsApp)',
+    'exp.work2_li2': 'Membuat chatbot menggunakan Dialogflow, Rasa, atau GPT API',
+    'exp.work2_li3': 'Menghubungkan chatbot dengan sistem pihak ketiga (Watzap)',
+    'exp.work2_li4': 'Menjalankan chatbot di server serta melakukan update dan pemantauan agar tetap optimal',
+    'exp.work2_li5': 'Menyusun panduan teknis dan memberikan pelatihan bagi pengguna',
+    'exp.work3_period': 'Okt 2021 – Sep 2024',
+    'exp.work3_duration': '~3 Tahun',
+    'exp.work3_be1': 'Membuat dan mengelola logika bisnis aplikasi',
+    'exp.work3_be2': 'Mengimplementasikan algoritma fungsi utama aplikasi',
+    'exp.work3_be3': 'Merancang dan mengelola database relasional',
+    'exp.work3_be4': 'Membuat API beserta dokumentasinya',
+    'exp.work3_be5': 'Integrasi layanan pihak ketiga (payment, email, media sosial)',
+    'exp.work3_be6': 'Memastikan API aman, cepat, dan mudah diintegrasikan',
+    'exp.work3_be7': 'Memantau kinerja dan menangani downtime / bug',
+    'exp.work3_fe1': 'Membuat tampilan UI menggunakan HTML, CSS, JavaScript',
+    'exp.work3_fe2': 'Mengintegrasikan elemen visual sesuai kebutuhan desain',
+    'exp.work3_fe3': 'Mengidentifikasi dan memperbaiki bug',
+    'exp.work3_fe4': 'Mengoptimalkan kecepatan dan performa situs web',
+    'exp.work3_fe5': 'Menerapkan praktik keamanan terbaik',
+    'exp.work3_fe6': 'Membuat dokumentasi kode dan proyek',
+    'exp.work4_period': 'Mei 2021 – Agt 2021',
+    'exp.work4_desc': 'Pembuatan Aplikasi Accounting Berbasis Web',
+    'exp.work4_li1': 'Membuat CRUD Form Repeater Kas & Bank',
+    'exp.work4_li2': 'Membuat Filter untuk Buku Besar',
+    'exp.work4_li3': 'Membuat laporan dan dokumentasi Pengguna',
+    'exp.work5b_desc': 'Pembuatan Aplikasi Berbasis Web',
+    'exp.work5b_li1': 'Membuat CRUD dan menampilkan data yang difilter sesuai kebutuhan client',
+    'exp.work5b_li2': 'Membuat query di Laravel untuk menampilkan laporan & Query Trigger',
+    'exp.work5b_li3': 'Merancang, membuat, dan mengelola database relasional',
+    'exp.work5_sub': 'PT Laskar Teknologi Mulia (CyberLabs) · Magang',
+    'exp.work5_period': 'Okt 2020 – Des 2020',
+    'exp.work6_li1': 'Membuat blog 2 hari sekali dengan tema bebas',
+    'exp.work6_li2': 'Membuat web dinamis bertema Hewan Tropis Dunia',
+    // EDUCATION
+    'edu.bsi_period': '2023 – Sekarang',
+    'edu.bsi_sub': 'Jurusan Sistem Informasi · Bogor',
+    'edu.bsi_li1': 'Mengikuti Seminar dan Workshop teknologi',
+    'edu.smk_sub': 'Jurusan Rekayasa Perangkat Lunak (RPL)',
+    'edu.smk_li1': 'Mengikuti Latihan Dasar Kepemimpinan Siswa (LDKS)',
+    'edu.smp_sub': 'Pendidikan Dasar',
+    'edu.smp_li1': 'Mengikuti Turnamen Basket',
+    // CONTACT
+    'contact.label': 'Kontak',
+    'contact.title1': 'Mari Bekerja',
+    'contact.title2': 'Bersama',
+    'contact.sub': 'Terbuka untuk peluang · Tersedia untuk penuh waktu & freelance',
+    'contact.available': 'Saat ini tersedia untuk proyek baru',
+    // FOOTER
+    'footer.credit': 'Dirancang & dibangun oleh',
+  },
+  en: {
+    // NAV
+    'nav.about': 'About',
+    'nav.skills': 'Skills',
+    'nav.projects': 'Projects',
+    'nav.experience': 'Experience',
+    'nav.contact': 'Contact',
+    'nav.hire': 'Hire Me',
+    // HERO
+    'hero.badge': 'Open for Opportunities',
+    'hero.tagline1': 'Fullstack Developer with',
+    'hero.tagline2': '3+ years experience',
+    'hero.tagline3': 'in Backend Development',
+    'hero.sub1': 'Specialist in',
+    'hero.sub2': 'experienced in building REST APIs and scalable web applications using React and Tailwind CSS.',
+    'hero.cta1': 'View Projects',
+    // ABOUT
+    'about.label': 'About Me',
+    'about.title1': 'Passionate about building',
+    'about.title2': 'scalable systems',
+    'about.p1': 'I am a Fullstack Developer with <strong class="text-bright">3 years of experience as a Backend Developer</strong> using Laravel and CodeIgniter. I am proficient in building reliable REST APIs, managing relational databases, and developing efficient, scalable systems.',
+    'about.p2': 'Beyond backend, I also have solid frontend experience using <span class="text-text">React, JavaScript, jQuery, and Tailwind CSS</span> — allowing me to collaborate effectively across the full stack and understand end-to-end application requirements.',
+    'about.btn1': 'View Projects',
+    'about.btn2': 'Get In Touch',
+    'about.stat1': 'Years Backend Dev',
+    'about.stat2': 'Projects Delivered',
+    'about.stat3': 'Tech Stacks',
+    'about.stat4': 'Coffee Consumed',
+    // SKILLS
+    'skills.title': 'Skills & Expertise',
+    'skills.be_sub': 'Core Expertise',
+    'skills.fe_sub': 'Supporting Skills',
+    'skills.db_sub': 'Data Management',
+    'skills.tools_sub': 'Workflow',
+    'skills.expertise_label': 'Expertise',
+    // PROJECTS
+    'projects.label': 'Work & Achievements',
+    'projects.title': 'Projects & Certificates',
+    'projects.tab_proj': 'Projects',
+    'projects.tab_cert': 'Certificates',
+    'proj.p1_desc': 'An application designed to streamline the teaching and learning process.',
+    'proj.p2_desc': 'Easy and affordable Robux/Roblox trading platform for users of all ages.',
+    'proj.p3_desc': 'An Indonesian securities crowdfunding platform for easy, fast, and secure financial investments.',
+    'proj.p4_desc': 'A productivity application designed specifically for Indonesian Army (TNI AD) personnel.',
+    'proj.p5_desc': 'A comprehensive mortgage accounting platform for installment management and financial reporting.',
+    'proj.p6_desc': 'WhatsApp chatbot integrated with Dialogflow, deployed on a server with active monitoring.',
+    // EXPERIENCE
+    'exp.label': 'Journey',
+    'exp.title': 'Experience & Education',
+    'exp.subtitle': 'A career journey from internship to full-stack developer, with experience at fintech companies and startups.',
+    'exp.tab_work': 'Work Experience',
+    'exp.tab_edu': 'Education',
+    'exp.work1_title': 'Freelance & Skill Development',
+    'exp.work1_sub': 'Full-Stack Developer · Remote',
+    'exp.work1_period': 'Oct 2024 – Present',
+    'exp.work1_li1': 'Taking on freelance web application development projects',
+    'exp.work1_li2': 'Studying API security best practices and authentication',
+    'exp.work1_li3': 'Taking courses and training to develop frontend–backend skills',
+    'exp.work1_li4': 'Building applications using React TypeScript & Laravel',
+    'exp.work2_li1': 'Defined chatbot goals, conversation flows, and the platform used (WhatsApp)',
+    'exp.work2_li2': 'Built the chatbot using Dialogflow, Rasa, and GPT API',
+    'exp.work2_li3': 'Connected the chatbot with third-party systems (Watzap)',
+    'exp.work2_li4': 'Deployed chatbot on a server with ongoing updates and monitoring for optimal performance',
+    'exp.work2_li5': 'Prepared technical documentation and provided user training',
+    'exp.work3_period': 'Oct 2021 – Sep 2024',
+    'exp.work3_duration': '~3 Years',
+    'exp.work3_be1': 'Built and managed application business logic',
+    'exp.work3_be2': 'Implemented core application algorithms and features',
+    'exp.work3_be3': 'Designed and managed relational databases',
+    'exp.work3_be4': 'Developed APIs along with full documentation',
+    'exp.work3_be5': 'Integrated third-party services (payment, email, social media)',
+    'exp.work3_be6': 'Ensured APIs are secure, fast, and easy to integrate',
+    'exp.work3_be7': 'Monitored performance and handled downtime / bugs',
+    'exp.work3_fe1': 'Built UI layouts using HTML, CSS, JavaScript',
+    'exp.work3_fe2': 'Integrated visual elements according to design requirements',
+    'exp.work3_fe3': 'Identified and resolved bugs',
+    'exp.work3_fe4': 'Optimized website speed and performance',
+    'exp.work3_fe5': 'Applied web security best practices',
+    'exp.work3_fe6': 'Created code and project documentation',
+    'exp.work4_period': 'May 2021 – Aug 2021',
+    'exp.work4_desc': 'Web-Based Accounting Application Development',
+    'exp.work4_li1': 'Built CRUD Form Repeater for Cash & Bank entries',
+    'exp.work4_li2': 'Developed filters for the General Ledger',
+    'exp.work4_li3': 'Created reports and user documentation',
+    'exp.work5b_desc': 'Web Application Development',
+    'exp.work5b_li1': 'Built CRUD operations and displayed filtered data per client requirements',
+    'exp.work5b_li2': 'Wrote Laravel queries to generate reports & query triggers',
+    'exp.work5b_li3': 'Designed, built, and managed relational databases',
+    'exp.work5_sub': 'PT Laskar Teknologi Mulia (CyberLabs) · Internship',
+    'exp.work5_period': 'Oct 2020 – Dec 2020',
+    'exp.work6_li1': 'Published blog posts every 2 days on various topics',
+    'exp.work6_li2': 'Built a dynamic website themed on Tropical Animals of the World',
+    // EDUCATION
+    'edu.bsi_period': '2023 – Present',
+    'edu.bsi_sub': 'Information Systems · Bogor',
+    'edu.bsi_li1': 'Actively participating in technology seminars and workshops',
+    'edu.smk_sub': 'Software Engineering (RPL)',
+    'edu.smk_li1': 'Participated in Student Basic Leadership Training (LDKS)',
+    'edu.smp_sub': 'Junior High School',
+    'edu.smp_li1': 'Participated in Basketball Tournament',
+    // CONTACT
+    'contact.label': 'Contact',
+    'contact.title1': "Let's Work",
+    'contact.title2': 'Together',
+    'contact.sub': 'Open for opportunities · Available for full-time & freelance',
+    'contact.available': 'Currently available for new projects',
+    // FOOTER
+    'footer.credit': 'Designed & built by',
+  }
+};
+
+// Modal data per language
+const modalDataLang = {
+  id: {
+    p1: { desc: 'Saya dengan tim saya yang berkelulusan dari SMK Wikrama Bogor telah berhasil menyelesaikan project dari <strong>Kementerian Luar Negeri Republik Indonesia</strong> untuk membuat aplikasi LMS bernama <strong>CETO (Centre for Education and Training Online)</strong>. Aplikasi yang dibuat untuk memudahkan proses belajar mengajar. <img src="/img/lms.jpeg" alt="" style="width:100%;border-radius:8px;margin-top:12px;">', features: ['Absensi', 'Agenda Kegiatan', 'Pengumpulan Tugas', 'Forum Diskusi', 'Penilaian Tugas', 'Export laporan ke Excel/PDF'], featLabel: 'Fitur Utama', certLabel: 'Materi yang Dipelajari', liveBtn: 'Live Demo', certBtn: 'Lihat Sertifikat', noCert: 'Sertifikat tidak tersedia' },
+    p2: { desc: 'Platform Transaksi Robux/Roblox yang efisien dan scalable. <img src="/img/mosherblox.jpg" alt="" style="width:100%;border-radius:8px;margin-top:12px;">', features: ['JWT Authentication', 'Manajemen Produk & Kategori', 'Pemrosesan Order & Transaksi', 'Integrasi Payment Gateway', 'Sistem Keranjang', 'Dashboard Analitik & Laporan', 'Integrasi Layanan'], featLabel: 'Fitur Utama', certLabel: 'Materi yang Dipelajari', liveBtn: 'Live Demo', certBtn: 'Lihat Sertifikat', noCert: 'Sertifikat tidak tersedia' },
+    p3: { desc: 'Danamart adalah penyelenggara urun dana berbasis teknologi informasi di Indonesia sesuai prinsip ESG (Environmental, Social, Governance).', features: ['JWT Authentication', 'Role-based access', 'Manajemen Uang Masuk/Keluar', 'Integrasi REST API', 'Integrasi Pihak Ketiga', 'Payment Gateway', 'Auto-generate Laporan'], featLabel: 'Fitur Utama', certLabel: 'Materi yang Dipelajari', liveBtn: 'Live Demo', certBtn: 'Lihat Sertifikat', noCert: 'Sertifikat tidak tersedia' },
+    p4: { desc: 'Aplikasi ini memungkinkan pengguna untuk mengakses informasi terkait iuran TWP, Baltab, serta pengajuan dan monitoring angsuran KPR dengan mudah. <img src="/img/apk_perumaha_tin_ad.jpeg" alt="" style="width:100%;border-radius:8px;margin-top:12px;">', features: ['Multi-role auth (admin, Debitur, Operator)', 'Manajemen Angsuran Debitur', 'Input & Rekap Data Debitur', 'Export laporan angsuran & debitur', 'Simulasi KPR'], featLabel: 'Fitur Utama', certLabel: 'Materi yang Dipelajari', liveBtn: 'Live Demo', certBtn: 'Lihat Sertifikat', noCert: 'Sertifikat tidak tersedia' },
+    p5: { desc: 'Aplikasi akuntansi berbasis web untuk PT Kreasi Asia. Menangani pencatatan kas & bank dengan form repeater, Buku Besar dengan filter canggih, dan laporan keuangan otomatis. <img src="/img/apk_online_tni_ad.jpeg" alt="" style="width:100%;border-radius:8px;margin-top:12px;">', features: ['CRUD Form Repeater Kas & Bank', 'Filter Dinamis Buku Besar', 'Laporan Keuangan Otomatis', 'Export Laporan', 'Dokumentasi Pengguna Lengkap'], featLabel: 'Fitur Utama', certLabel: 'Materi yang Dipelajari', liveBtn: 'Live Demo', certBtn: 'Lihat Sertifikat', noCert: 'Sertifikat tidak tersedia' },
+    p6: { desc: 'Chatbot WhatsApp yang terintegrasi dengan Watzap untuk menangani pengguna yang ingin melakukan transaksi melalui WA.', features: ['Register Chat', 'Filter Produk', 'Buat Transaksi', 'Laporan via WA Doc'], featLabel: 'Fitur Utama', certLabel: 'Materi yang Dipelajari', liveBtn: 'Live Demo', certBtn: 'Lihat Sertifikat', noCert: 'Sertifikat tidak tersedia' },
+  },
+  en: {
+    p1: { desc: 'My team and I, graduates of SMK Wikrama Bogor, successfully completed a project for the <strong>Ministry of Foreign Affairs of the Republic of Indonesia</strong> — building a Learning Management System (LMS) called <strong>CETO (Centre for Education and Training Online)</strong>, designed to streamline the teaching and learning process. <img src="/img/lms.jpeg" alt="" style="width:100%;border-radius:8px;margin-top:12px;">', features: ['Attendance', 'Activity Schedule', 'Assignment Submission', 'Discussion Forum', 'Assignment Grading', 'Export reports to Excel/PDF'], featLabel: 'Key Features', certLabel: 'Topics Covered', liveBtn: 'Live Demo', certBtn: 'View Certificate', noCert: 'Certificate unavailable' },
+    p2: { desc: 'An efficient and scalable Robux/Roblox transaction platform. <img src="/img/mosherblox.jpg" alt="" style="width:100%;border-radius:8px;margin-top:12px;">', features: ['JWT Authentication', 'Product & Category Management', 'Order & Transaction Processing', 'Payment Gateway Integration', 'Cart System', 'Analytics Dashboard & Reporting', 'Service Integration'], featLabel: 'Key Features', certLabel: 'Topics Covered', liveBtn: 'Live Demo', certBtn: 'View Certificate', noCert: 'Certificate unavailable' },
+    p3: { desc: 'Danamart is an information-technology-based crowdfunding organizer in Indonesia, operating in accordance with ESG (Environmental, Social, Governance) principles.', features: ['JWT Authentication', 'Role-based access', 'Money In/Out Management', 'REST API Integration', 'Third Party Integration', 'Payment Gateway', 'Auto-generate Report'], featLabel: 'Key Features', certLabel: 'Topics Covered', liveBtn: 'Live Demo', certBtn: 'View Certificate', noCert: 'Certificate unavailable' },
+    p4: { desc: 'This application allows users to easily access information related to TWP and Baltab contributions, as well as submit and monitor mortgage installments. <img src="/img/apk_perumaha_tin_ad.jpeg" alt="" style="width:100%;border-radius:8px;margin-top:12px;">', features: ['Multi-role auth (admin, Debtor, Operator)', 'Debtor Installment Management', 'Input & Recap Debtor Data', 'Export installment & debtor reports', 'Mortgage Simulation'], featLabel: 'Key Features', certLabel: 'Topics Covered', liveBtn: 'Live Demo', certBtn: 'View Certificate', noCert: 'Certificate unavailable' },
+    p5: { desc: 'A web-based accounting application for PT Kreasi Asia. Handles cash & bank recording with form repeaters, a General Ledger with advanced filters, and automated financial reports. <img src="/img/apk_online_tni_ad.jpeg" alt="" style="width:100%;border-radius:8px;margin-top:12px;">', features: ['CRUD Cash & Bank Form Repeater', 'Dynamic General Ledger Filter', 'Automated Financial Reports', 'Export Reports', 'Complete User Documentation'], featLabel: 'Key Features', certLabel: 'Topics Covered', liveBtn: 'Live Demo', certBtn: 'View Certificate', noCert: 'Certificate unavailable' },
+    p6: { desc: 'A WhatsApp chatbot integrated with Watzap to handle users who want to perform transactions via WhatsApp.', features: ['Register Chat', 'Filter Product', 'Create Transaction', 'WhatsApp Report Doc'], featLabel: 'Key Features', certLabel: 'Topics Covered', liveBtn: 'Live Demo', certBtn: 'View Certificate', noCert: 'Certificate unavailable' },
+  }
+};
+
+let currentLang = 'id';
+
+function applyTranslations(lang) {
+  const t = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) {
+      el.innerHTML = t[key];
+    }
+  });
+  // Update lang label in toggle
+  document.getElementById('lang-label').textContent = lang === 'id' ? 'EN' : 'ID';
+  document.documentElement.lang = lang;
+  // Re-calculate mobile menu height if open
+  if (typeof mobileMenuOpen !== 'undefined' && mobileMenuOpen) {
+    const menu = document.getElementById('mobile-menu');
+    if (menu) menu.style.maxHeight = menu.scrollHeight + 'px';
+  }
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'id' ? 'en' : 'id';
+  applyTranslations(currentLang);
+}
+
+// Patch openModal to use current lang data
+const _origOpenModal = openModal;
+window.openModal = function(id) {
+  const base = modalData[id];
+  if (!base) return;
+  const lang = modalDataLang[currentLang]?.[id] || {};
+
+  // Temporarily patch desc and features
+  const origDesc = base.desc;
+  const origFeatures = base.features;
+
+  base.desc = lang.desc || origDesc;
+  base.features = lang.features || origFeatures;
+
+  _origOpenModal(id);
+
+  // Patch labels inside modal
+  const featLabelEl = document.querySelector('#modal-body .text-xs.font-600.text-text.mb-3');
+  if (featLabelEl && lang.featLabel) featLabelEl.textContent = lang.featLabel;
+
+  // Patch action buttons
+  const actionsEl = document.getElementById('modal-actions');
+  if (actionsEl && lang.liveBtn) {
+    actionsEl.querySelectorAll('.btn-primary').forEach(btn => {
+      if (btn.textContent.trim() === 'Live Demo' || btn.textContent.trim() === 'Live Demo') {
+        btn.innerHTML = btn.innerHTML.replace(/Live Demo/g, lang.liveBtn);
+      }
+    });
+    actionsEl.querySelectorAll('button').forEach(btn => {
+      if (btn.textContent.includes('Demo') || btn.textContent.includes('Demo')) {
+        btn.innerHTML = btn.innerHTML.replace(/Live Demo/g, lang.liveBtn);
+      }
+    });
+  }
+
+  // Restore
+  base.desc = origDesc;
+  base.features = origFeatures;
+};
+
+// Init
+applyTranslations('id');
 </script>
 
 </body>
